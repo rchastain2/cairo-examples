@@ -1,0 +1,84 @@
+object Form1: TForm1
+  Left = 440
+  Height = 300
+  Top = 168
+  Width = 196
+  Caption = 'Easy Cairo Color'
+  ClientHeight = 300
+  ClientWidth = 196
+  OnCreate = FormCreate
+  LCLVersion = '2.0.10.0'
+  object LBPredefinedColors: TListBox
+    Left = 8
+    Height = 91
+    Top = 33
+    Width = 180
+    ItemHeight = 0
+    OnClick = LBPredefinedColorsClick
+    ScrollWidth = 178
+    TabOrder = 0
+    TopIndex = -1
+  end
+  object EDColor: TLabeledEdit
+    Left = 8
+    Height = 30
+    Top = 148
+    Width = 180
+    EditLabel.Height = 17
+    EditLabel.Width = 180
+    EditLabel.Caption = 'Color'
+    EditLabel.ParentColor = False
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 1
+    OnKeyPress = EDColorKeyPress
+  end
+  object EDResult: TLabeledEdit
+    Left = 8
+    Height = 30
+    Top = 202
+    Width = 180
+    EditLabel.Height = 17
+    EditLabel.Width = 180
+    EditLabel.Caption = 'Result'
+    EditLabel.ParentColor = False
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 2
+  end
+  object BTCopy: TButton
+    Left = 8
+    Height = 28
+    Hint = 'Copy to clipboard'
+    Top = 236
+    Width = 180
+    Caption = 'Copy'
+    Enabled = False
+    OnClick = BTCopyClick
+    TabOrder = 3
+  end
+  object CBAutoCopy: TCheckBox
+    Left = 8
+    Height = 20
+    Hint = 'Copy automatically result to clipboard'
+    Top = 272
+    Width = 180
+    AutoSize = False
+    Caption = 'Automatic copy'
+    Checked = True
+    OnClick = CBAutoCopyClick
+    ParentShowHint = False
+    ShowHint = True
+    State = cbChecked
+    TabOrder = 4
+  end
+  object LBPredefined: TLabel
+    Left = 8
+    Height = 17
+    Top = 8
+    Width = 180
+    AutoSize = False
+    Caption = 'Predefined colors'
+    ParentColor = False
+  end
+end

@@ -1,0 +1,58 @@
+object Form1: TForm1
+  Left = 347
+  Height = 470
+  Top = 148
+  Width = 400
+  Caption = 'Itinéraire du Cavalier'
+  ClientHeight = 470
+  ClientWidth = 400
+  OnDestroy = FormDestroy
+  Position = poScreenCenter
+  LCLVersion = '1.6.0.4'
+  object PaintBox1: TPaintBox
+    Left = 0
+    Height = 400
+    Top = 0
+    Width = 400
+    OnPaint = PaintBox1Paint
+  end
+  object Button1: TButton
+    Left = 315
+    Height = 25
+    Top = 410
+    Width = 75
+    Caption = 'Chercher'
+    OnClick = Button1Click
+    TabOrder = 0
+  end
+  object GroupBox1: TGroupBox
+    Left = 10
+    Height = 50
+    Top = 410
+    Width = 295
+    Caption = 'Coordonnées (X, Y) du point de départ'
+    ClientHeight = 30
+    ClientWidth = 291
+    TabOrder = 1
+    object SpinEdit1: TSpinEdit
+      Left = 10
+      Height = 23
+      Top = 2
+      Width = 50
+      MaxValue = 8
+      MinValue = 1
+      TabOrder = 0
+      Value = 6
+    end
+    object SpinEdit2: TSpinEdit
+      Left = 70
+      Height = 23
+      Top = 2
+      Width = 50
+      MaxValue = 8
+      MinValue = 1
+      TabOrder = 1
+      Value = 5
+    end
+  end
+end

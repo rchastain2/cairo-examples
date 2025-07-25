@@ -1,0 +1,78 @@
+
+unit Unit1;
+ 
+{$mode objfpc}{$H+}
+ 
+interface
+ 
+uses
+  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls;
+ 
+type
+  { TForm1 }
+  TForm1 = class(TForm)
+    PaintBox1: TPaintBox;
+    procedure PaintBox1Paint(Sender: TObject);
+  private
+    { private declarations }
+  public
+    { public declarations }
+  end;
+ 
+var
+  Form1: TForm1;
+ 
+implementation
+ 
+{$R *.lfm}
+ 
+uses
+  Cairo, CairoWin32;
+ 
+{ TForm1 }
+ 
+procedure TForm1.PaintBox1Paint(Sender: TObject);
+var
+  surface: pcairo_surface_t;
+  cr: pcairo_t;
+  bmp: TBitmap;
+  w, h: Integer;
+ 
+begin
+  w := PaintBox1.Width;
+  h := PaintBox1.Height;
+ 
+  bmp := TBitmap.Create;
+  bmp.SetSize(w, h);
+ 
+  surface := cairo_win32_surface_create(bmp.Canvas.Handle);
+ 
+  cr := cairo_create(surface);
+  cairo_set_source_rgb(cr, 1, 1, 1);
+  cairo_paint(cr);
+ 
+  cairo_select_font_face(cr, 'Chess Alpha', CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
+  cairo_set_font_size(cr, 40);
+ 
+  cairo_set_source_rgb(cr, 0.0, 0.0, 0.0);
+ 
+  cairo_move_to(cr, 0, 1 * 40); cairo_show_text(cr, 't+nWlNjT');
+  cairo_move_to(cr, 0, 2 * 40); cairo_show_text(cr, 'OoOwLo+o');
+  cairo_move_to(cr, 0, 3 * 40); cairo_show_text(cr, ' +j+ + +');
+  cairo_move_to(cr, 0, 4 * 40); cairo_show_text(cr, '+ + +pO ');
+  cairo_move_to(cr, 0, 5 * 40); cairo_show_text(cr, ' + + + +');
+  cairo_move_to(cr, 0, 6 * 40); cairo_show_text(cr, '+ + + + ');
+  cairo_move_to(cr, 0, 7 * 40); cairo_show_text(cr, 'pPpQkPpP');
+  cairo_move_to(cr, 0, 8 * 40); cairo_show_text(cr, 'RhBqKbHr');
+ 
+  PaintBox1.Canvas.Draw(0, 0, bmp);
+ 
+  cairo_destroy(cr);
+  cairo_surface_destroy(surface);
+ 
+  bmp.Destroy;
+end;
+ 
+{ TForm1 }
+ 
+end.

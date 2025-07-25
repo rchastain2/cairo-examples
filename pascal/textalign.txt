@@ -1,0 +1,38 @@
+
+https://cairographics.org/tutorial/#L2textalign
+
+Text Alignment
+
+When you try to center text letter by letter at various locations, you have to decide how you want to center it. For example the following code will actually center letters individually, leading to poor results when your letters are of different sizes. (Unlike most examples, here I assume a 26 x 1 workspace.)
+
+cairo_text_extents_t te;
+char alphabet[] = "AbCdEfGhIjKlMnOpQrStUvWxYz";
+char letter[2];
+
+for (i=0; i < strlen(alphabet); i++) {
+    *letter = '\0';
+    strncat (letter, alphabet + i, 1);
+
+    cairo_text_extents (cr, letter, &te);
+    cairo_move_to (cr, i + 0.5 - te.x_bearing - te.width / 2,
+            0.5 - te.y_bearing - te.height / 2);
+    cairo_show_text (cr, letter);
+}
+
+Instead the vertical centering must be based on the general size of the font, thus keeping your baseline steady. Note that the exact positioning now depends on the metrics provided by the font itself, so the results are not necessarily the same from font to font.
+
+cairo_font_extents_t fe;
+cairo_text_extents_t te;
+char alphabet[] = "AbCdEfGhIjKlMnOpQrStUvWxYz";
+char letter[2];
+
+cairo_font_extents (cr, &fe);
+for (i=0; i < strlen(alphabet); i++) {
+    *letter = '\0';
+    strncat (letter, alphabet + i, 1);
+
+    cairo_text_extents (cr, letter, &te);
+    cairo_move_to (cr, i + 0.5 - te.x_bearing - te.width / 2,
+            0.5 - fe.descent + fe.height / 2);
+    cairo_show_text (cr, letter);
+}

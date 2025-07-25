@@ -1,0 +1,37 @@
+object fMain: TfMain
+  Left = 584
+  Top = 248
+  Width = 280
+  Height = 323
+  Caption = 'Cairo Library Example 1.0'
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  object lVer: TLabel
+    Left = 8
+    Top = 8
+    Width = 18
+    Height = 13
+    Caption = 'lVer'
+  end
+  object pb: TPaintBox
+    Left = 8
+    Top = 32
+    Width = 256
+    Height = 256
+    Align = alCustom
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    OnPaint = pbPaint
+  end
+  object tUpdate: TTimer
+    Interval = 500
+    OnTimer = tUpdateTimer
+    Left = 8
+    Top = 32
+  end
+end

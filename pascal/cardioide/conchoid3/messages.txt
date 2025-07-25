@@ -1,0 +1,9 @@
+Free Pascal Compiler version 3.2.0 [2020/07/05] for x86_64
+Copyright (c) 1993-2020 by Florian Klaempfl and others
+Target OS: Linux for x86-64
+Compiling cairodemo.pas
+Compiling main.pas
+main.pas(55,3) Note: Local variable "a" not used
+Linking cairodemo
+155 lines compiled, 1.9 sec
+1 note(s) issued

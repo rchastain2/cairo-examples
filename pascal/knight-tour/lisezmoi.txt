@@ -1,0 +1,8 @@
+
+L'itinéraire du Cavalier.
+
+Démonstration d'un algorithme pour trouver un chemin passant sur toutes les cases du damier, sans jamais passer deux fois sur la même case. Adapté d'un script Lua.
+
+https://rosettacode.org/wiki/Knight%27s_tour#Lua
+
+Exemple d'utilisation de la bibliothèque Cairo.

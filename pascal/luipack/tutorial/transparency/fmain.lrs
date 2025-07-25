@@ -1,0 +1,8 @@
+LazarusResources.Add('TFormMain','FORMDATA',[
+  'TPF0'#9'TFormMain'#8'FormMain'#4'Left'#3'M'#1#6'Height'#2'M'#3'Top'#3#28#1#5
+  +'Width'#3'3'#2#11'BorderIcons'#11#12'biSystemMenu'#0#11'BorderStyle'#7#8'bsD'
+  +'ialog'#7'Caption'#6#29'Cairo Tutorial - Transparency'#12'ClientHeight'#2'M'
+  +#11'ClientWidth'#3'3'#2#10'ParentFont'#8#8'Position'#7#14'poScreenCenter'#10
+  +'LCLVersion'#6#6'0.9.25'#0#14'TCairoPaintBox'#13'CairoPaintBox'#6'Height'#2
+  +'I'#5'Width'#3'0'#2#6'OnDraw'#7#17'CairoPaintBoxDraw'#0#0#0
+]);

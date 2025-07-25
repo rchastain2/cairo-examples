@@ -1,0 +1,34 @@
+object Form1: TForm1
+  Left = 349
+  Height = 613
+  Top = 77
+  Width = 862
+  BorderStyle = bsDialog
+  Caption = 'Form1'
+  ClientHeight = 613
+  ClientWidth = 862
+  Color = clBtnFace
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  KeyPreview = True
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
+  Position = poScreenCenter
+  LCLVersion = '2.2.4.0'
+  object CairoPaintBox1: TCairoPaintBox
+    Left = 135
+    Height = 105
+    Top = 92
+    Width = 105
+  end
+  object IdleTimer1: TIdleTimer
+    Enabled = False
+    Interval = 10
+    OnTimer = IdleTimer1Timer
+    Left = 59
+    Top = 51
+  end
+end

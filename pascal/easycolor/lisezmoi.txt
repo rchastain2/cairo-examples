@@ -1,0 +1,12 @@
+
+EASY CAIRO COLOR
+
+Convertisseur de couleur à l'usage des programmeurs utilisant la bibliothèque Cairo.
+
+Programme permettant de convertir une couleur en une chaîne de caractères utilisable comme argument pour la fonction cairo_set_source_rgb(). Par exemple, "$FFFFFF" sera converti en "1.000, 1.000, 1.000".
+
+La couleur à convertir peut être choisie dans une liste de couleurs prédéfinies ou saisie manuellement. Dans ce dernier cas, appuyer sur la touche ENTRÉE pour lancer la conversion.
+
+Les noms de couleurs avec les valeurs correspondantes ont été extraits de l'unité WinGraph de Stephan Berinde.
+
+http://math.ubbcluj.ro/~sberinde/wingraph/main.html#colornames

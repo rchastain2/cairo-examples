@@ -1,0 +1,15 @@
+
+' http://www.freebasic.net/forum/viewtopic.php?p=215065#p215065
+
+const SCREEN_W = 800
+const SCREEN_H = 600
+
+dim as long stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, SCREEN_W)
+
+dim as cairo_surface_t ptr surface = cairo_image_surface_create_for_data( _
+  ScreenPtr(), _
+  CAIRO_FORMAT_ARGB32, _
+  SCREEN_W, _
+  SCREEN_H, _
+  stride _
+)

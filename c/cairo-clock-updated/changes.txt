@@ -1,0 +1,193 @@
+18d17
+< #include <librsvg/rsvg-cairo.h>
+60a60,61
+> GError* g_pError  = NULL;
+> GFile* g_pFile = NULL;
+61a63,69
+> RsvgRectangle g_Rectangle =
+> {
+>   .x = 0.0,
+>   .y = 0.0,
+>   .width = 128,
+>   .height = 128,
+> };
+79,80c87
+< static gboolean on_alpha_window_expose (GtkWidget* pWidget,
+<                                         GdkEventExpose* pExpose)
+---
+> static gboolean on_alpha_window_expose(GtkWidget* pWidget, GdkEventExpose* pExpose)
+92,94c99
+< static void on_alpha_screen_changed (GtkWidget* pWidget,
+<                                      GdkScreen* pOldScreen,
+<                                      GtkWidget* pLabel)
+---
+> static void on_alpha_screen_changed(GtkWidget* pWidget, GdkScreen* pOldScreen, GtkWidget* pLabel)
+98d102
+< 
+101d104
+< 
+105,107c108
+< gboolean on_key_press (GtkWidget* pWidget,
+<                        GdkEventKey* pKey,
+<                        gpointer userData)
+---
+> gboolean on_key_press(GtkWidget* pWidget, GdkEventKey* pKey, gpointer userData)
+121,123c122
+< gboolean on_button_press (GtkWidget* pWidget,
+<                           GdkEventButton* pButton,
+<                           GdkWindowEdge edge)
+---
+> gboolean on_button_press(GtkWidget* pWidget, GdkEventButton* pButton, GdkWindowEdge edge)
+128,132c127
+<       gtk_window_begin_move_drag (GTK_WINDOW (gtk_widget_get_toplevel (pWidget)),
+<                                   pButton->button,
+<                                   pButton->x_root,
+<                                   pButton->y_root,
+<                                   pButton->time);
+---
+>       gtk_window_begin_move_drag(GTK_WINDOW(gtk_widget_get_toplevel(pWidget)), pButton->button, pButton->x_root, pButton->y_root, pButton->time);
+134,139c129
+<       gtk_window_begin_resize_drag (GTK_WINDOW (gtk_widget_get_toplevel (pWidget)),
+<                                     edge,
+<                                     pButton->button,
+<                                     pButton->x_root,
+<                                     pButton->y_root,
+<                                     pButton->time);
+---
+>       gtk_window_begin_resize_drag(GTK_WINDOW(gtk_widget_get_toplevel(pWidget)), edge, pButton->button, pButton->x_root, pButton->y_root, pButton->time);
+163,165c153,157
+<   rsvg_handle_render_cairo (g_pSvgHandles[CLOCK_DROP_SHADOW], g_pCairoContext);
+<   rsvg_handle_render_cairo (g_pSvgHandles[CLOCK_FACE], g_pCairoContext);
+<   rsvg_handle_render_cairo (g_pSvgHandles[CLOCK_MARKS], g_pCairoContext);
+---
+> 
+>   rsvg_handle_render_document(g_pSvgHandles[CLOCK_DROP_SHADOW], g_pCairoContext, &g_Rectangle, &g_pError);
+>   rsvg_handle_render_document(g_pSvgHandles[CLOCK_FACE], g_pCairoContext, &g_Rectangle, &g_pError);
+>   rsvg_handle_render_document(g_pSvgHandles[CLOCK_MARKS], g_pCairoContext, &g_Rectangle, &g_pError);
+>   
+172c164,166
+<   rsvg_handle_render_cairo (g_pSvgHandles[CLOCK_HOUR_HAND_SHADOW], g_pCairoContext);
+---
+>   
+>   rsvg_handle_render_document(g_pSvgHandles[CLOCK_HOUR_HAND_SHADOW], g_pCairoContext, &g_Rectangle, &g_pError);
+>   
+177,178d170
+<   rsvg_handle_render_cairo (g_pSvgHandles[CLOCK_MINUTE_HAND_SHADOW], g_pCairoContext);
+<   cairo_restore (g_pCairoContext);
+179a172,174
+>   rsvg_handle_render_document(g_pSvgHandles[CLOCK_MINUTE_HAND_SHADOW], g_pCairoContext, &g_Rectangle, &g_pError);
+>   
+>   cairo_restore(g_pCairoContext);
+185c180,182
+<     rsvg_handle_render_cairo (g_pSvgHandles[CLOCK_SECOND_HAND_SHADOW], g_pCairoContext);
+---
+>     
+>     rsvg_handle_render_document(g_pSvgHandles[CLOCK_SECOND_HAND_SHADOW], g_pCairoContext, &g_Rectangle, &g_pError);
+>     
+188d184
+< 
+191c187,189
+<   rsvg_handle_render_cairo (g_pSvgHandles[CLOCK_HOUR_HAND], g_pCairoContext);
+---
+>   
+>   rsvg_handle_render_document(g_pSvgHandles[CLOCK_HOUR_HAND], g_pCairoContext, &g_Rectangle, &g_pError);
+>   
+195,196d192
+<   rsvg_handle_render_cairo (g_pSvgHandles[CLOCK_MINUTE_HAND], g_pCairoContext);
+<   cairo_restore (g_pCairoContext);
+197a194,196
+>   rsvg_handle_render_document(g_pSvgHandles[CLOCK_MINUTE_HAND], g_pCairoContext, &g_Rectangle, &g_pError);
+>   
+>   cairo_restore(g_pCairoContext);
+202c201,203
+<     rsvg_handle_render_cairo (g_pSvgHandles[CLOCK_SECOND_HAND], g_pCairoContext);
+---
+>     
+>     rsvg_handle_render_document(g_pSvgHandles[CLOCK_SECOND_HAND], g_pCairoContext, &g_Rectangle, &g_pError);
+>     
+205d205
+< 
+207,209c207,211
+<   rsvg_handle_render_cairo (g_pSvgHandles[CLOCK_FACE_SHADOW], g_pCairoContext);
+<   rsvg_handle_render_cairo (g_pSvgHandles[CLOCK_GLASS], g_pCairoContext);
+<   rsvg_handle_render_cairo (g_pSvgHandles[CLOCK_FRAME], g_pCairoContext);
+---
+>   
+>   rsvg_handle_render_document(g_pSvgHandles[CLOCK_FACE_SHADOW], g_pCairoContext, &g_Rectangle, &g_pError);
+>   rsvg_handle_render_document(g_pSvgHandles[CLOCK_GLASS], g_pCairoContext, &g_Rectangle, &g_pError);
+>   rsvg_handle_render_document(g_pSvgHandles[CLOCK_FRAME], g_pCairoContext, &g_Rectangle, &g_pError);
+>   
+217c219
+<   GError* pError;
+---
+>   
+229d230
+< 
+233d233
+< 
+236d235
+< 
+239d237
+< 
+243d240
+< 
+246d242
+< 
+249d244
+< 
+260d254
+< 
+262d255
+<   rsvg_init ();
+265c258,262
+<     g_pSvgHandles[iElement] = rsvg_handle_new_from_file (g_cFileNames[iElement], &pError);
+---
+>   {
+>     g_pFile = g_file_new_for_path(g_cFileNames[iElement]);
+>     g_pSvgHandles[iElement] = rsvg_handle_new_from_gfile_sync(g_pFile, RSVG_HANDLE_FLAGS_NONE, NULL, &g_pError);
+>     g_object_unref(g_pFile);
+>   };
+267a265,268
+>   g_Rectangle.x = 0.0;
+>   g_Rectangle.y = 0.0;
+>   g_Rectangle.width = g_DimensionData.width;
+>   g_Rectangle.height = g_DimensionData.height;
+281,286c282
+<   gtk_window_set_geometry_hints (GTK_WINDOW (pWindow),
+<                                  pWindow,
+<                                  &hints,
+<                                  GDK_HINT_MIN_SIZE |
+<                                  GDK_HINT_MAX_SIZE |
+<                                  GDK_HINT_ASPECT);
+---
+>   gtk_window_set_geometry_hints(GTK_WINDOW(pWindow), pWindow, &hints, GDK_HINT_MIN_SIZE | GDK_HINT_MAX_SIZE | GDK_HINT_ASPECT);
+289,301c285,287
+<   g_signal_connect (G_OBJECT (pWindow),
+<                     "expose-event",
+<                     G_CALLBACK (on_alpha_window_expose),
+<                     NULL);
+<   g_signal_connect (G_OBJECT (pWindow),
+<                     "key-press-event",
+<                     G_CALLBACK (on_key_press),
+<                     NULL);
+<   g_signal_connect (G_OBJECT (pWindow),
+<                     "button-press-event",
+<                     G_CALLBACK (on_button_press),
+<                     NULL);
+< 
+---
+>   g_signal_connect(G_OBJECT(pWindow), "expose-event", G_CALLBACK(on_alpha_window_expose), NULL);
+>   g_signal_connect(G_OBJECT(pWindow), "key-press-event", G_CALLBACK(on_key_press), NULL);
+>   g_signal_connect(G_OBJECT(pWindow), "button-press-event", G_CALLBACK(on_button_press), NULL);
+304d289
+< 
+307d291
+< 
+310d293
+< 
+315c298
+<     rsvg_handle_free (g_pSvgHandles[iElement]);
+---
+>     g_object_unref(g_pSvgHandles[iElement]);
+317d299
+<   rsvg_term ();

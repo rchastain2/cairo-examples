@@ -1,0 +1,12 @@
+
+Roue animée.
+
+Dessin d'une roue numérotée en utilisant la bibliothèque Cairo.
+
+Génération de 36 images représentant les diverses positions de la roue.
+
+Projet de démonstration utilisant BGRABitmap.
+
+Les couleurs de la roue proviennent de la page suivante :
+
+  * https://www.w3schools.com/colors/colors_palettes.asp 

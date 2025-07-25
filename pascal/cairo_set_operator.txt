@@ -1,0 +1,26 @@
+
+How do I clear a surface?
+
+If you want to clear your surface to a uniform, opaque color then it is quite straightforward:
+
+/* Set surface to opaque color (r, g, b) */
+cairo_set_source_rgb (cr, r, g, b);
+cairo_paint (cr);
+
+However, what if you want to clear the surface to something other than an opaque color. Simply modifying the above code to use "cairo_set_source_rgba (cr, 0, 0, 0, 0);" will not work since cairo uses the OVER compositing operator by default, and blending something entirely transparent OVER something else has no effect at all. Instead, you can use the SOURCE operator which copies both color and alpha values directly from the source to the destination instead of blending:
+
+/* Set surface to translucent color (r, g, b, a) */
+cairo_set_source_rgba (cr, r, g, b, a);
+cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+cairo_paint (cr);
+
+Of course, you won't want to forget to set the default CAIRO_OPERATOR_OVER again when you're finished. And the most convenient habit for doing that is to just use cairo_save/cairo_restore around the whole block:
+
+/* Set surface to translucent color (r, g, b, a) without disturbing graphics state. */
+cairo_save (cr);
+cairo_set_source_rgba (cr, r, g, b, a);
+cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+cairo_paint (cr);
+cairo_restore (cr);
+
+Finally, to clear a surface to all transparent, one could simply use CAIRO_OPERATOR_CLEAR instead of CAIRO_OPERATOR_SOURCE, in which case the call to cairo_set_source_rgba would not be needed at all, (the CLEAR operator always sets the destination to 0 in every channel regardless of what the source pattern contains). But the above approach with CAIRO_OPERATOR_SOURCE is a more general way to clear the surface since it allows for "clearing" to a translucent color such as 50% red rather than just clearing to entirely transparent.

@@ -1,0 +1,12 @@
+
+' http://www.freebasic.net/forum/viewtopic.php?p=215063#p215063
+
+#define BYTES_PER_PIXEL 4
+
+dim as cairo_surface_t ptr surface = cairo_image_surface_create_for_data( _
+  ScreenPtr(), _
+  CAIRO_FORMAT_ARGB32, _
+  SURFACE_WIDTH, _
+  SURFACE_HEIGHT, _
+  SURFACE_WIDTH * BYTES_PER_PIXEL _
+)

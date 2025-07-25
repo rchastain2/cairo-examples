@@ -1,0 +1,18 @@
+
+How do I paint from one surface to another?
+
+If you have some surface source which you'd like to paint to some surface destination at position (x, y) you would use code as follows:
+
+cairo_t *cr = cairo_create (destination);
+cairo_set_source_surface (cr, source, x, y);
+cairo_paint (cr);
+
+Note that the paint operation will copy the entire surface. If you'd like to instead copy some (width, height) rectangle from (source_x, source_y) to some point (dest_x, dest_y) on the destination you would instead compute a new position for the source surface origin and then use cairo_fill instead of cairo_paint:
+
+cairo_set_source_surface (cr, source, dest_x - source_x, dest_y - source_y)
+cairo_rectangle (cr, dest_x, dest_y, width, height);
+cairo_fill (cr);
+
+And note that using a surface as the source pattern will work with any other cairo drawing operation as well. You can use cairo_set_source_surface to get patterned effects from cairo_stroke or cairo_show_text just as easily.
+
+Finally, by default cairo uses the OVER operator when drawing, so if the source surface contains alpha content, then it will be used to blend the source over the destination. This is often exactly what is desired, but if you would like to directly copy alpha information from the source to the destination without blending, then you can use cairo_set_operator with CAIRO_OPERATOR_SOURCE to do that, (see clearing a surface for some examples using CAIRO_OPERATOR_SOURCE).

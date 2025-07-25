@@ -1,0 +1,97 @@
+object MainForm: TMainForm
+  Left = 238
+  Height = 240
+  Top = 147
+  Width = 699
+  Caption = 'Test des dés et des pièces'
+  ClientHeight = 240
+  ClientWidth = 699
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  LCLVersion = '1.6.0.4'
+  object btnRollDice: TButton
+    Left = 16
+    Height = 25
+    Top = 144
+    Width = 104
+    Caption = 'Jet du dé'
+    OnClick = btnRollDiceClick
+    TabOrder = 0
+  end
+  object StatusBar: TStatusBar
+    Left = 0
+    Height = 23
+    Top = 217
+    Width = 699
+    Panels = <    
+      item
+        Width = 200
+      end>
+  end
+  object pnlDice: TPanel
+    Left = 16
+    Height = 104
+    Top = 16
+    Width = 104
+    TabOrder = 2
+  end
+  object btnDiceKeep: TButton
+    Left = 16
+    Height = 25
+    Top = 176
+    Width = 104
+    Caption = 'Garder ?'
+    OnClick = btnDiceKeepClick
+    TabOrder = 3
+  end
+  object pnlFlipCoin: TPanel
+    Left = 288
+    Height = 104
+    Top = 16
+    Width = 104
+    TabOrder = 4
+  end
+  object btnFlipCoin: TButton
+    Left = 288
+    Height = 25
+    Top = 144
+    Width = 104
+    Caption = 'Jet de la pièce'
+    OnClick = btnFlipCoinClick
+    TabOrder = 5
+  end
+  object btnFlipCoinKeep: TButton
+    Left = 288
+    Height = 25
+    Top = 176
+    Width = 104
+    Caption = 'Garder ?'
+    OnClick = btnFlipCoinKeepClick
+    TabOrder = 6
+  end
+  object pnl2DDice: TPanel
+    Left = 528
+    Height = 104
+    Top = 16
+    Width = 104
+    TabOrder = 7
+  end
+  object btn2DDice: TButton
+    Left = 528
+    Height = 25
+    Top = 144
+    Width = 104
+    Caption = 'Jet du dé 2D'
+    OnClick = btn2DDiceClick
+    TabOrder = 8
+  end
+  object btn2DDiceKeep: TButton
+    Left = 528
+    Height = 25
+    Top = 176
+    Width = 104
+    Caption = 'Garder ?'
+    OnClick = btn2DDiceKeepClick
+    TabOrder = 9
+  end
+end

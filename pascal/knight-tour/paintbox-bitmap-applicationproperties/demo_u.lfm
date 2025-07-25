@@ -1,0 +1,32 @@
+object Form1: TForm1
+  Left = 241
+  Height = 163
+  Top = 161
+  Width = 128
+  Caption = 'Form1'
+  ClientHeight = 163
+  ClientWidth = 128
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  LCLVersion = '1.6.0.4'
+  object PaintBox1: TPaintBox
+    Left = 0
+    Height = 128
+    Top = 0
+    Width = 128
+  end
+  object Button1: TButton
+    Left = 48
+    Height = 25
+    Top = 133
+    Width = 75
+    Caption = 'Chercher'
+    OnClick = Button1Click
+    TabOrder = 0
+  end
+  object ApplicationProperties1: TApplicationProperties
+    OnIdle = ApplicationProperties1Idle
+    left = 144
+    top = 240
+  end
+end

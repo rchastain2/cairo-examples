@@ -1,0 +1,43 @@
+object Form1: TForm1
+  Left = 286
+  Height = 254
+  Top = 123
+  Width = 216
+  Caption = 'Roulette'
+  ClientHeight = 254
+  ClientWidth = 216
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  LCLVersion = '2.0.10.0'
+  object PBAnimation: TPaintBox
+    Left = 8
+    Height = 200
+    Top = 8
+    Width = 200
+    ParentColor = False
+    OnPaint = PBAnimationPaint
+  end
+  object BTRoll: TButton
+    Left = 133
+    Height = 25
+    Top = 216
+    Width = 75
+    Caption = 'Roll'
+    OnClick = BTRollClick
+    TabOrder = 0
+  end
+  object EDResult: TEdit
+    Left = 8
+    Height = 30
+    Top = 216
+    Width = 80
+    ReadOnly = True
+    TabOrder = 1
+  end
+  object TMAnimation: TTimer
+    Enabled = False
+    OnTimer = TMAnimationTimer
+    Left = 88
+    Top = 32
+  end
+end

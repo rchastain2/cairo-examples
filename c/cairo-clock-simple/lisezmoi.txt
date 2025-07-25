@@ -1,0 +1,14 @@
+
+# Horloge Cairo
+
+Simple horloge de bureau basée sur les bibliothèques GTK2 et Cairo.
+
+Le programme est une version simplifiée de *cairo-clock.c* par "MacSlow" :
+
+- https://gitlab.com/cairo/cairo-demos/-/tree/master/cairo-candy
+
+Le programme original utilise des fichiers SVG, et dépend de la bibliothèque Librsvg. 
+
+Dans la version modifiée du programme, l'horloge est entièrement dessinée avec Cairo.
+
+Pour fermer l'horloge, appuyez sur la touche Esc.

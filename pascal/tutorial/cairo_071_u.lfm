@@ -1,0 +1,18 @@
+object Form1: TForm1
+  Left = 347
+  Height = 200
+  Top = 148
+  Width = 200
+  Caption = 'Form1'
+  ClientHeight = 200
+  ClientWidth = 200
+  Position = poScreenCenter
+  LCLVersion = '1.6.0.4'
+  object PaintBox1: TPaintBox
+    Left = 0
+    Height = 200
+    Top = 0
+    Width = 200
+    OnPaint = PaintBox1Paint
+  end
+end

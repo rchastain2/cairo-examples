@@ -1,0 +1,3 @@
+
+#include "cairo/cairo.bi"
+#libpath "C:\GTK3\lib"

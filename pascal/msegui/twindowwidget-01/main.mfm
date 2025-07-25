@@ -1,0 +1,28 @@
+object mainfo: tmainfo
+  bounds_x = 428
+  bounds_y = 40
+  bounds_cx = 400
+  bounds_cy = 400
+  container.frame.localprops = []
+  container.frame.localprops1 = []
+  container.bounds = (
+    0
+    0
+    400
+    400
+  )
+  caption = 'MSEgui Cairo demo'
+  windowopacity = -Inf
+  moduleclassname = 'tmainform'
+  object xrenderwidget: twindowwidget
+    frame.levelo = -1
+    frame.localprops = [frl_levelo]
+    frame.localprops1 = []
+    bounds_x = 20
+    bounds_y = 20
+    bounds_cx = 360
+    bounds_cy = 360
+    fpsmax = -1
+    onclientpaint = clientpaintexe
+  end
+end

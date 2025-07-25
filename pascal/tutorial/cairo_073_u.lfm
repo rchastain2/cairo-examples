@@ -1,0 +1,24 @@
+object Form1: TForm1
+  Left = 241
+  Height = 400
+  Top = 161
+  Width = 400
+  Caption = 'Form1'
+  ClientHeight = 400
+  ClientWidth = 400
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  LCLVersion = '1.6.0.4'
+  object PaintBox1: TPaintBox
+    Left = 0
+    Height = 400
+    Top = 0
+    Width = 400
+  end
+  object Timer1: TTimer
+    Interval = 300
+    OnTimer = Timer1Timer
+    left = 192
+    top = 176
+  end
+end

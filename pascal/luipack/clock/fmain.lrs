@@ -1,0 +1,11 @@
+{ This is an automatically generated lazarus resource file }
+
+LazarusResources.Add('TForm1','FORMDATA',[
+  'TPF0'#6'TForm1'#5'Form1'#4'Left'#3#143#1#6'Height'#3#144#1#3'Top'#3#242#0#5
+  +'Width'#3#144#1#7'Caption'#6#23'LCL Cairo Clock Example'#12'ClientHeight'#3
+  +#144#1#11'ClientWidth'#3#144#1#8'OnCreate'#7#10'FormCreate'#10'LCLVersion'#6
+  +#8'2.0.10.0'#0#14'TCairoPaintBox'#14'CairoPaintBox1'#4'Left'#2#0#6'Height'#3
+  +#144#1#3'Top'#2#0#5'Width'#3#144#1#6'OnDraw'#7#18'CairoPaintBox1Draw'#5'Alig'
+  +'n'#7#8'alClient'#0#0#6'TTimer'#6'Timer1'#7'OnTimer'#7#11'Timer1Timer'#4'Lef'
+  +'t'#2'&'#3'Top'#2'`'#0#0#0
+]);

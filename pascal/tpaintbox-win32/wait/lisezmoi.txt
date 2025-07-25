@@ -1,0 +1,6 @@
+
+Deux animations pour patienter.
+
+Les animations sont dessinées au moyen de la bibliothèque Cairo.
+
+Projet Lazarus 1.6. 

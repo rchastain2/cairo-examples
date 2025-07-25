@@ -1,0 +1,179 @@
+cairo <https://www.cairographics.org/>
+
+  * News <https://www.cairographics.org/news/>
+  * Download <https://www.cairographics.org/download/>
+  * Documentation <https://www.cairographics.org/documentation/>
+  * Contact <https://www.cairographics.org/contact/>
+  * Examples <https://www.cairographics.org/examples/>
+
+roundedrectangles
+
+
+    Method A
+
+From the cairo samples, modified. Gives a very nice shape but takes
+width and height only as guides, however width and height do not render
+properly and are affected by radius.
+
+|def roundedrecA(self,cr,x,y,width,height,radius=5):
+    #/* a custom shape, that could be wrapped in a function */
+    #radius = 5  #/*< and an approximate curvature radius */
+    x0       = x+radius/2.0   #/*< parameters like cairo_rectangle */
+    y0       = y+radius/2.0
+    rect_width  = width - radius
+    rect_height = height - radius
+
+    cr.save()
+    #cr.set_line_width (0.04)
+    #self.snippet_normalize (cr, width, height)
+
+    x1=x0+rect_width
+    y1=y0+rect_height
+    #if (!rect_width || !rect_height)
+    #    return
+    if rect_width/2<radius:
+        if rect_height/2<radius:
+            cr.move_to  (x0, (y0 + y1)/2)
+            cr.curve_to (x0 ,y0, x0, y0, (x0 + x1)/2, y0)
+            cr.curve_to (x1, y0, x1, y0, x1, (y0 + y1)/2)
+            cr.curve_to (x1, y1, x1, y1, (x1 + x0)/2, y1)
+            cr.curve_to (x0, y1, x0, y1, x0, (y0 + y1)/2)
+        else:
+            cr.move_to  (x0, y0 + radius)
+            cr.curve_to (x0 ,y0, x0, y0, (x0 + x1)/2, y0)
+            cr.curve_to (x1, y0, x1, y0, x1, y0 + radius)
+            cr.line_to (x1 , y1 - radius)
+            cr.curve_to (x1, y1, x1, y1, (x1 + x0)/2, y1)
+            cr.curve_to (x0, y1, x0, y1, x0, y1- radius)
+
+    else:
+        if rect_height/2<radius:
+            cr.move_to  (x0, (y0 + y1)/2)
+            cr.curve_to (x0 , y0, x0 , y0, x0 + radius, y0)
+            cr.line_to (x1 - radius, y0)
+            cr.curve_to (x1, y0, x1, y0, x1, (y0 + y1)/2)
+            cr.curve_to (x1, y1, x1, y1, x1 - radius, y1)
+            cr.line_to (x0 + radius, y1)
+            cr.curve_to (x0, y1, x0, y1, x0, (y0 + y1)/2)
+        else:
+            cr.move_to  (x0, y0 + radius)
+            cr.curve_to (x0 , y0, x0 , y0, x0 + radius, y0)
+            cr.line_to (x1 - radius, y0)
+            cr.curve_to (x1, y0, x1, y0, x1, y0 + radius)
+            cr.line_to (x1 , y1 - radius)
+            cr.curve_to (x1, y1, x1, y1, x1 - radius, y1)
+            cr.line_to (x0 + radius, y1)
+            cr.curve_to (x0, y1, x0, y1, x0, y1- radius)
+
+    cr.close_path ()
+
+    cr.restore()
+|
+
+
+    Method B
+
+From mono moonlight aka mono silverlight. Works very well on larger shapes.
+
+|def roundedrecMoonlight(self,cr,x,y,w,h,radius_x=5,radius_y=5):
+    #from mono moonlight aka mono silverlight
+    #test limits (without using multiplications)
+    # http://graphics.stanford.edu/courses/cs248-98-fall/Final/q1.html
+    ARC_TO_BEZIER = 0.55228475
+    if radius_x > w - radius_x:
+        radius_x = w / 2
+    if radius_y > h - radius_y:
+        radius_y = h / 2
+
+    #approximate (quite close) the arc using a bezier curve
+    c1 = ARC_TO_BEZIER * radius_x
+    c2 = ARC_TO_BEZIER * radius_y
+
+    cr.new_path();
+    cr.move_to ( x + radius_x, y)
+    cr.rel_line_to ( w - 2 * radius_x, 0.0)
+    cr.rel_curve_to ( c1, 0.0, radius_x, c2, radius_x, radius_y)
+    cr.rel_line_to ( 0, h - 2 * radius_y)
+    cr.rel_curve_to ( 0.0, c2, c1 - radius_x, radius_y, -radius_x, radius_y)
+    cr.rel_line_to ( -w + 2 * radius_x, 0)
+    cr.rel_curve_to ( -c1, 0, -radius_x, -c2, -radius_x, -radius_y)
+    cr.rel_line_to (0, -h + 2 * radius_y)
+    cr.rel_curve_to (0.0, -c2, radius_x - c1, -radius_y, radius_x, -radius_y)
+    cr.close_path ()
+|
+
+
+    Method C
+
+I can't remember where I got this. If you are the author please add your
+name. Works well on smaller shapes.
+
+|def roundedrec(self,context,x,y,w,h,r = 10):
+    "Draw a rounded rectangle"
+    #   A****BQ
+    #  H      C
+    #  *      *
+    #  G      D
+    #   F****E
+
+    context.move_to(x+r,y)                      # Move to A
+    context.line_to(x+w-r,y)                    # Straight line to B
+    context.curve_to(x+w,y,x+w,y,x+w,y+r)       # Curve to C, Control points are both at Q
+    context.line_to(x+w,y+h-r)                  # Move to D
+    context.curve_to(x+w,y+h,x+w,y+h,x+w-r,y+h) # Curve to E
+    context.line_to(x+r,y+h)                    # Line to F
+    context.curve_to(x,y+h,x,y+h,x,y+h-r)       # Curve to G
+    context.line_to(x,y+r)                      # Line to H
+    context.curve_to(x,y,x,y,x+r,y)             # Curve to A
+    return
+|
+
+
+    Method D
+
+Created by Helton Moraes (heltonbiker at gmail dot com). Uses round arcs
+and takes advantage of the segment-creation property of cairo.arc() -
+just draw the arcs, no need to draw straight segments in between.
+
+|def draw_rounded(cr, area, radius):
+    """ draws rectangles with rounded (circular arc) corners """
+    from math import pi
+    a,b,c,d=area
+    cr.arc(a + radius, c + radius, radius, 2*(pi/2), 3*(pi/2))
+    cr.arc(b - radius, c + radius, radius, 3*(pi/2), 4*(pi/2))
+    cr.arc(b - radius, d - radius, radius, 0*(pi/2), 1*(pi/2))  # ;o)
+    cr.arc(a + radius, d - radius, radius, 1*(pi/2), 2*(pi/2))
+    cr.close_path()
+    cr.stroke()
+
+################################################################
+
+### EXAMPLE
+import cairo, Image
+
+w,h = 800, 600
+offset = 100
+fig_size = (w,h)
+
+# an area with coordinates of
+# (top, bottom, left, right) edges in absolute coordinates:
+inside_area = (offset, w-offset, offset, h-offset)
+
+surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, *fig_size)
+cr = cairo.Context(surface)
+cr.set_line_width(3)
+cr.set_source_rgb(1,1,1)
+
+draw_rounded(cr, inside_area, 150)
+
+im = Image.frombuffer("RGBA",
+                       fig_size,
+                       surface.get_data(),
+                       "raw",
+                       "BGRA",
+                       0,1)
+im.show()
+|
+
+Links: cookbook <https://www.cairographics.org/cookbook/>
+Last edited Mon Apr 25 19:01:59 2016

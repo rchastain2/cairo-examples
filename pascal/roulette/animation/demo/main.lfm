@@ -1,0 +1,29 @@
+object Form1: TForm1
+  Left = 286
+  Height = 252
+  Top = 123
+  Width = 216
+  Caption = 'Roulette'
+  ClientHeight = 252
+  ClientWidth = 216
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  LCLVersion = '2.0.10.0'
+  object PBAnimation: TPaintBox
+    Left = 8
+    Height = 200
+    Top = 8
+    Width = 200
+    OnPaint = PBAnimationPaint
+  end
+  object SEAngle: TSpinEdit
+    Left = 128
+    Height = 28
+    Top = 216
+    Width = 80
+    Increment = 10
+    MaxValue = 360
+    OnChange = SEAngleChange
+    TabOrder = 0
+  end
+end

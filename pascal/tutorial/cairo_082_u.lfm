@@ -1,0 +1,24 @@
+object Form1: TForm1
+  Left = 241
+  Height = 200
+  Top = 161
+  Width = 200
+  Caption = 'Form1'
+  ClientHeight = 200
+  ClientWidth = 200
+  LCLVersion = '1.6.0.4'
+  object CairoPaintBox1: TCairoPaintBox
+    Left = 0
+    Height = 200
+    Top = 0
+    Width = 200
+    OnDraw = CairoPaintBox1Draw
+    OnCreateContext = CairoPaintBox1CreateContext
+  end
+  object Timer1: TTimer
+    Interval = 300
+    OnTimer = Timer1Timer
+    left = 144
+    top = 248
+  end
+end

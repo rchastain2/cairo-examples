@@ -1,0 +1,11 @@
+
+archives/
+documentation/
+
+*.cmd
+*.compiled
+*.lps
+*.o
+*.or
+*.ppu
+*.sh 
