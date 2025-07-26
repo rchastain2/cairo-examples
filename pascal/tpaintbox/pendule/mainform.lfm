@@ -1,0 +1,32 @@
+object Form1: TForm1
+  Left = 628
+  Height = 480
+  Top = 146
+  Width = 640
+  BorderStyle = bsSingle
+  Caption = 'Pendule'
+  ClientHeight = 480
+  ClientWidth = 640
+  Color = clBtnFace
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnKeyPress = FormKeyPress
+  LCLVersion = '3.6.0.0'
+  object PB: TPaintBox
+    Left = 0
+    Height = 480
+    Top = 0
+    Width = 640
+    Align = alClient
+    OnPaint = PBPaint
+  end
+  object TM: TTimer
+    Interval = 40
+    OnTimer = TMTimer
+    Left = 104
+    Top = 192
+  end
+end

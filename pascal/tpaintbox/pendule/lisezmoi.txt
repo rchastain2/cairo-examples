@@ -1,0 +1,39 @@
+
+Exemple de dessin dans une fenêtre avec Cairo. Version multiplateforme.
+
+Dans la précédente version, la surface Cairo était créée de la façon suivante :
+
+uses
+{ ... }
+  Cairo, CairoWin32;
+
+type
+  TForm1 = class(TForm)
+{ ... }
+  private
+    fBitmap: TBitmap;
+{ ... }
+
+{ TForm1 }
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+{ ... }
+  fSurface := cairo_win32_surface_create(fBitmap.Canvas.Handle);
+
+Dans la nouvelle version, elle est créée ainsi :
+
+var
+  srf: pcairo_surface_t;
+  bmp: TBitmap;
+begin
+{ ... }
+  srf := cairo_image_surface_create_for_data(
+    bmp.RawImage.Data,
+    CFormat,
+    bmp.Width,
+    bmp.Height,
+    cairo_format_stride_for_width(CFormat, bmp.Width)
+  );
+
+De sorte qu'on n'a plus besoin de l'unité CairoWin32, et que le projet peut être compilé sous Linux.
