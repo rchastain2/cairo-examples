@@ -3,11 +3,10 @@ unit Eye;
 
 interface
 
+uses
+  Color;
+
 type
-  TColor = record
-    r, g, b: double;
-  end;
-  
   TEye = class
     x, y, dx, dy, ix, iy, dix, diy, radius, irisRadius: double;
     irisColor: TColor;
@@ -16,8 +15,6 @@ type
     procedure Look(const x_, y_: integer);
     procedure Update(const dt: double);
   end;
-
-function RandomColor: TColor;
 
 implementation
 
@@ -76,15 +73,6 @@ procedure TEye.Update(const dt: double);
 begin
 	dix := dix + (ix - dix) * 16 * dt;
 	diy := diy + (iy - diy) * 16 * dt;
-end;
-
-(* ========================================================================== *)
-
-function RandomColor: TColor;
-begin
-  result.r := Random(256) / 255; 
-  result.g := Random(256) / 255; 
-  result.b := Random(256) / 255; 
 end;
 
 (* ========================================================================== *)

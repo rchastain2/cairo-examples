@@ -9,6 +9,7 @@ uses
   ptcCrt,
   ptcGraph,
   ptcMouse,
+  Color,
 {$IFDEF USE_CAIRO}
   Image,
   Cairo,
@@ -141,7 +142,6 @@ begin
   end;
   
   SetBkColor($333333);
-  //ClearDevice;
   
   (* ======================================================================== *)
   
