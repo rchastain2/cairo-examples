@@ -1,6 +1,5 @@
 
-*.o
-*.ppu
-*.sh
+demo.o
+demo
 
 Makefile.txt

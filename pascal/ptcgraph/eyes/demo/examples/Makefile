@@ -11,17 +11,7 @@ else
 PFLAGS += -dRELEASE
 endif
 
-ifdef CAIRO
-PFLAGS += -dUSE_CAIRO
-endif
-
-SDL2_UNITS := $(HOME)/Documents/pascal/sources/sdl2/units
-
-ifeq ($(MAKECMDGOALS),demosdl)
-PFLAGS += -Fu$(SDL2_UNITS)
-endif
-
-PROGRAMS := $(filter-out eye.pas image.pas,$(wildcard *.pas))
+PROGRAMS := $(wildcard *.pas)
 
 ifeq ($(OS),Windows_NT)
 	BINARIES := $(patsubst %.pas,%.exe,$(PROGRAMS))
@@ -31,11 +21,7 @@ endif
 
 .PHONY: clean
 
-default: demo
-
-all: demo demosdl
-
-%: %.pas eye.pas
+%: %.pas
 	@$(PC) $(PFLAGS) $<
 
 clean:

@@ -136,11 +136,12 @@ begin
   
   if LResult <> grOK then
   begin
+    WriteLn(GraphErrorMsg(LResult));
     Halt;
   end;
   
   SetBkColor($333333);
-  ClearDevice;
+  //ClearDevice;
   
   (* ======================================================================== *)
   

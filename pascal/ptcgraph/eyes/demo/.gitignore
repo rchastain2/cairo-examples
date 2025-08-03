@@ -1,0 +1,7 @@
+
+*.o
+*.ppu
+
+demo
+
+Makefile.txt 

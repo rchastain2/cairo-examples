@@ -17,10 +17,22 @@ Programme développé et essayé sous Linux.
 Pour compiler:
 
 ```bash
+cd demo
 make demo CAIRO=1
 ```
 
-(Si CAIRO n'est pas défini, le visage est dessiné avec les fonctions de ptcGraph.)
+(Si *CAIRO* n'est pas défini, le visage est dessiné avec les fonctions de ptcGraph.)
+
+## Version SDL2 (inachevée)
+
+```bash
+cd demo-sdl
+make demo CAIRO=1
+```
+
+(Si *CAIRO* n'est pas défini, le visage est dessiné avec les fonctions de SDL_gfx.)
+
+## Programme original
 
 Pour lancer le programme original :
 
