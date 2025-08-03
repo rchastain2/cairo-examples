@@ -13,6 +13,11 @@ uses
 const
   COLOR_WIDTH = 4;
 
+(*
+  https://forum.lazarus.freepascal.org/index.php/topic,59894.msg450696.html#msg450696
+  https://forum.lazarus.freepascal.org/index.php/topic,59894.msg450796.html#msg450796
+*)
+
 type
   THeader = packed record
     Width, Height, Reserved: longint;
