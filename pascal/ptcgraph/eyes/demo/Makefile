@@ -3,13 +3,7 @@ PC := fpc
 
 PFLAGS := -Mobjfpc
 PFLAGS += -Sh
-
-ifdef DEBUG
 PFLAGS += -ghl
-PFLAGS += -dDEBUG
-else
-PFLAGS += -dRELEASE
-endif
 
 ifdef CAIRO
 PFLAGS += -dUSE_CAIRO
@@ -19,11 +13,11 @@ PFLAGS += -Fu..
 
 .PHONY: clean
 
-demo: demo.pas ../eye.pas
+demo: demo.pas image.pas ../eye.pas ../color.pas
 	@$(PC) $(PFLAGS) $<
 
 clean:
-	@rm -fv *.o *.ppu
+	@rm -fv *.o *.ppu ../*.o ../*.ppu
 
 distclean: clean
 	@rm -fv demo

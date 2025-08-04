@@ -15,6 +15,12 @@ type
     procedure Look(const x_, y_: integer);
     procedure Update(const dt: double);
   end;
+  
+  TMood = (mHappy, mConcerned, mSad);
+
+function Angle(const x1, y1, x2, y2: double): double;
+function Distance(const x1, y1, x2, y2: double): double;
+function Normal(const val, min, max: double): double;
 
 implementation
 

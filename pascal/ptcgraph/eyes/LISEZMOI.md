@@ -1,7 +1,7 @@
 
 # Eyes
 
-Essai d'adaptation en Pascal d'une [animation LÖVE][1]. Visage animé dont les yeux suivent le curseur de la souris.
+Visage animé dont les yeux suivent le curseur de la souris. Adaptation en Pascal d'une [animation LÖVE][1].
 
 ![Capture d'écran](screenshots/01.png)
 
@@ -21,7 +21,7 @@ cd demo
 make demo CAIRO=1
 ```
 
-(Si *CAIRO* n'est pas défini, le visage est dessiné avec les fonctions de ptcGraph.)
+Si *CAIRO* n'est pas défini, le visage est dessiné avec ptcGraph.
 
 ## Version SDL2 (inachevée)
 
@@ -30,7 +30,7 @@ cd demo-sdl
 make demo CAIRO=1
 ```
 
-(Si *CAIRO* n'est pas défini, le visage est dessiné avec les fonctions de SDL_gfx.)
+Si *CAIRO* n'est pas défini, le visage est dessiné avec SDL_gfx.
 
 ## Programme original
 
