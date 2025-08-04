@@ -59,7 +59,7 @@ begin
   cairo_destroy(cr);
 end;
 
-procedure CairoDraw(var AImage: TImage; const AStaticCairoSurface: pcairo_surface_t; const MouseX, MouseY: integer; const AMood: TMood);
+procedure CairoDraw(var AImage: TImage; const AStaticCairoSurface: pcairo_surface_t; const MouseX, MouseY: integer; const AMood: TMood; const ABlink: double);
 var
   sf: pcairo_surface_t;
   cr: pcairo_t;
@@ -92,6 +92,12 @@ begin
     cairo_set_source_rgb(cr, 0.0, 0.0, 0.0);
     cairo_fill(cr);
   end;
+  
+  (* Clignement *)
+  
+  cairo_rectangle(cr, w / 2 - SPACE - RADIUS, h / 2 - RADIUS, (RADIUS + SPACE) * 2, RADIUS * 3 * ABlink);
+  cairo_set_source_rgb(cr, 232 / 255, 209 / 255, 171 / 255);
+  cairo_fill(cr);
   
   (* Bouche *)
   
@@ -174,7 +180,7 @@ var
   LDriver, LMode, LResult: smallint;
 {$IFDEF USE_CAIRO}
   LImage: PImage;
-  LStaticCairoSurface: pcairo_surface_t;
+  LStatic: pcairo_surface_t;
 {$ENDIF}
   MouseX, MouseY, Button: integer;
   LKey: char;
@@ -182,8 +188,10 @@ var
   LTime, LOldTime: qword;
   LColor: TColor;
   LMood: TMood;
-  LDistance: double;
+  LBlink: double;
+  LDist: double;
   LPage: integer;
+  dt: double;
   i: integer;
   
 begin
@@ -202,6 +210,7 @@ begin
   end;
   
   SetBkColor($333333);
+  LBlink := 0.0;
   
   (* ======================================================================== *)
   
@@ -212,7 +221,7 @@ begin
   (* ======================================================================== *)
   
 {$IFDEF USE_CAIRO}
-  LStaticCairoSurface := CreateStaticCairoSurface(SURFACE_WIDTH, SURFACE_HEIGHT);
+  LStatic := CreateStaticCairoSurface(SURFACE_WIDTH, SURFACE_HEIGHT);
   LImage := CreateImage(SURFACE_WIDTH, SURFACE_HEIGHT);
 {$ENDIF}
   
@@ -231,19 +240,22 @@ begin
     (* Update *)
     
     LTime := GetTickCount64;
+    dt := (LTime - LOldTime) / 1000;
     
-    LDistance := Distance(MouseX, MouseY, SURFACE_WIDTH / 2, SURFACE_HEIGHT / 2);
+    LDist := Distance(MouseX, MouseY, SURFACE_WIDTH / 2, SURFACE_HEIGHT / 2);
     
-    if LDistance > RADIUS * 8 then
+    if LDist > RADIUS * 8 then
       LMood := mHappy else
-    if LDistance > RADIUS * 4 then
+    if LDist > RADIUS * 4 then
       LMood := mConcerned else
       LMood := mSad;
+    
+    LBlink := LBlink - LBlink * 16 * dt;
     
     for i := 0 to 1 do
     begin
       eyes[i].Look(MouseX, MouseY);
-      eyes[i].Update((LTime - LOldTime) / 1000);
+      eyes[i].Update(dt);
     end;
     
     LOldTime := LTime;
@@ -251,7 +263,7 @@ begin
     (* Redraw *)
     
 {$IFDEF USE_CAIRO}
-    CairoDraw(LImage^, LStaticCairoSurface, MouseX, MouseY, LMood);
+    CairoDraw(LImage^, LStatic, MouseX, MouseY, LMood, LBlink);
     PutImage(0, 0, LImage^, NormalPut);
 {$ELSE}
     SetActivePage(LPage);
@@ -267,10 +279,13 @@ begin
       LKey := ReadKey;
       if LKey in [#3, #27, 'q', 'Q'] then
         LExit := TRUE;
-      if LKey = #0 then
+      if LKey in ['b', 'B'] then
+        LBlink := 1.0;
+     {if LKey = #0 then
       begin
         LKey := ReadKey;
-      end;
+        // ...
+      end;}
     end;
     
     Delay(40);
@@ -280,7 +295,7 @@ begin
   
 {$IFDEF USE_CAIRO}
   FreeImage(LImage, SURFACE_WIDTH, SURFACE_HEIGHT);
-  cairo_surface_destroy(LStaticCairoSurface);
+  cairo_surface_destroy(LStatic);
 {$ENDIF}
   
   (* ======================================================================== *)

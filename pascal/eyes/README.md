@@ -12,4 +12,17 @@ cd demo
 make demo CAIRO=1
 ```
 
+## Build SDL2 version
+
+```bash
+cd demo-sdl
+make demo CAIRO=1
+```
+
+## Play with original program
+
+```bash
+love original
+```
+
 [1]: https://love2d.org/forums/viewtopic.php?p=220421#p220421
