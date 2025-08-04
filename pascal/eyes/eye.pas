@@ -22,6 +22,17 @@ function Angle(const x1, y1, x2, y2: double): double;
 function Distance(const x1, y1, x2, y2: double): double;
 function Normal(const val, min, max: double): double;
 
+const
+  SURFACE_WIDTH = 800;
+  SURFACE_HEIGHT = 600;
+  RADIUS = 32;
+  SPACE = 50;
+
+const
+  rSkin = 232 / 255;
+  gSkin = 209 / 255;
+  bSkin = 171 / 255;
+
 implementation
 
 uses

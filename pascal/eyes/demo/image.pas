@@ -4,6 +4,8 @@ unit Image;
 (*
   Image for Cairo and [ptc]Graph, by PascalDragon.
   https://forum.lazarus.freepascal.org/index.php/topic,59894.0.html
+  https://forum.lazarus.freepascal.org/index.php/topic,59894.msg450696.html#msg450696
+  https://forum.lazarus.freepascal.org/index.php/topic,59894.msg450796.html#msg450796
 *)
 
 interface
