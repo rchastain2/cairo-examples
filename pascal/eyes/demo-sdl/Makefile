@@ -3,6 +3,7 @@ PC := fpc
 
 PFLAGS := -Mobjfpc
 PFLAGS += -Sh
+PFLAGS += -Fu..
 
 ifdef DEBUG
 PFLAGS += -ghl
@@ -18,7 +19,7 @@ ifdef CAIRO
 PFLAGS += -dUSE_CAIRO
 endif
 
-.PHONY: clean
+.PHONY: demo clean distclean
 
 demo: demo.pas ../eye.pas $(SDL2_UNITS)
 	@$(PC) $(PFLAGS) $<

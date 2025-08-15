@@ -3,7 +3,7 @@
 
 Animated face, whose eyes follow mouse cursor. Adapted from a [LÖVE animation][1].
 
-![Screenshot](screenshots/02.png)
+![Screenshot](screenshots/01.png)
 
 ## Build
 

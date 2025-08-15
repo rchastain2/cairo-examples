@@ -4,14 +4,13 @@ PC := fpc
 PFLAGS := -Mobjfpc
 PFLAGS += -Sh
 PFLAGS += -ghl
+PFLAGS += -Fu..
 
 ifdef CAIRO
 PFLAGS += -dUSE_CAIRO
 endif
 
-PFLAGS += -Fu..
-
-.PHONY: clean
+.PHONY: demo clean distclean
 
 demo: demo.pas image.pas ../eye.pas ../color.pas
 	@$(PC) $(PFLAGS) $<

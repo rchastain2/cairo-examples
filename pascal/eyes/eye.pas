@@ -33,6 +33,9 @@ const
   gSkin = 209 / 255;
   bSkin = 171 / 255;
 
+var
+  eyes: array[0..1] of TEye;
+
 implementation
 
 uses
@@ -94,4 +97,16 @@ end;
 
 (* ========================================================================== *)
 
+var
+  LColor: TColor;
+
+initialization
+  LColor := RandomColor;
+  eyes[0] := TEye.Create(SURFACE_WIDTH div 2 - SPACE, SURFACE_HEIGHT div 2, RADIUS, RADIUS div 2, LColor, 0.4);
+  eyes[1] := TEye.Create(SURFACE_WIDTH div 2 + SPACE, SURFACE_HEIGHT div 2, RADIUS, RADIUS div 2, LColor, 0.4);
+  
+finalization
+  eyes[0].Free;
+  eyes[1].Free;
+  
 end. 

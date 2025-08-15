@@ -16,15 +16,8 @@ uses
 {$ENDIF}
   Eye;
 
-(* ========================================================================== *)
-
-var
-  eyes: array[0..1] of TEye;
-
-(* ========================================================================== *)
-
 {$IFDEF USE_CAIRO}
-function CreateStaticSurface(const AWidth, AHeight: integer): pcairo_surface_t;
+function StaticSurface(const AWidth, AHeight: integer): pcairo_surface_t;
 var
   cr: pcairo_t;
   i: integer;
@@ -53,7 +46,7 @@ begin
   cairo_destroy(cr);
 end;
 
-procedure CairoDraw(var AImage: TImage; const AStatic: pcairo_surface_t; const MouseX, MouseY: integer; const AMood: TMood; const ABlink: double);
+procedure CairoDraw(var AImage: TImage; const AStatic: pcairo_surface_t; const AMouseX, AMouseY: integer; const AMood: TMood; const ABlink: double);
 var
   sf: pcairo_surface_t;
   cr: pcairo_t;
@@ -125,7 +118,7 @@ begin
   (* Objet *)
   
   cairo_set_source_rgb(cr, 1, 0, 0);
-  cairo_arc(cr, MouseX, MouseY, 5, 0, 2 * PI);
+  cairo_arc(cr, AMouseX, AMouseY, 5, 0, 2 * PI);
   cairo_fill(cr);
   
   cairo_destroy(cr);
@@ -177,7 +170,7 @@ var
   LKey: char;
   LExit: boolean;
   LTime, LOldTime: qword;
-  LColor: TColor;
+  //LColor: TColor;
   LIrisColor: longword;
   LMood: TMood;
   LBlink: double;
@@ -188,7 +181,12 @@ var
   
 begin
   Randomize;
-  WindowTitle := 'Eyes';
+  WindowTitle :=
+{$IFDEF USE_CAIRO}
+    'Eyes ptcGraph & Cairo';
+{$ELSE}
+    'Eyes ptcGraph';
+{$ENDIF}
   LPage := 0;
   LDriver := VESA;
   LMode := m800x600x16m;
@@ -206,16 +204,12 @@ begin
   
   (* ======================================================================== *)
   
-  LColor := RandomColor;
-  eyes[0] := TEye.Create(SURFACE_WIDTH div 2 - SPACE, SURFACE_HEIGHT div 2, RADIUS, RADIUS div 2, LColor, 0.4);
-  eyes[1] := TEye.Create(SURFACE_WIDTH div 2 + SPACE, SURFACE_HEIGHT div 2, RADIUS, RADIUS div 2, LColor, 0.4);
-  
-  with LColor do LIrisColor := Round(255 * r) shl 16 or Round(255 * g) shl 8 or Round(255 * r);
+  with eyes[0].irisColor do LIrisColor := Round(255 * r) shl 16 or Round(255 * g) shl 8 or Round(255 * r);
   
   (* ======================================================================== *)
   
 {$IFDEF USE_CAIRO}
-  LStatic := CreateStaticSurface(SURFACE_WIDTH, SURFACE_HEIGHT);
+  LStatic := StaticSurface(SURFACE_WIDTH, SURFACE_HEIGHT);
   LImage := CreateImage(SURFACE_WIDTH, SURFACE_HEIGHT);
 {$ENDIF}
   
@@ -292,12 +286,4 @@ begin
   cairo_surface_destroy(LStatic);
 {$ENDIF}
   
-  (* ======================================================================== *)
-  
-  for i := 0 to 1 do
-  begin
-    eyes[i].Free;
-  end;
-  
-  (* ======================================================================== *)
 end.
