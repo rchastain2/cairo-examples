@@ -17,109 +17,23 @@ uses
   Eye;
 
 {$IFDEF USE_CAIRO}
-function StaticSurface(const AWidth, AHeight: integer): pcairo_surface_t;
-var
-  cr: pcairo_t;
-  i: integer;
-begin
-  result := cairo_image_surface_create(CAIRO_FORMAT_ARGB32, AWidth, AHeight);
-  cr := cairo_create(result);
-  
-  cairo_set_source_rgb(cr, 0.2, 0.2, 0.2);
-  cairo_paint(cr);
-  
-  (* Visage *)
-  
-  cairo_arc(cr, AWidth / 2, AHeight / 2, 4 * RADIUS, 0, 2 * PI);
-  cairo_set_source_rgb(cr, rSkin, gSkin, bSkin);
-  cairo_fill(cr);
-  
-  (* Blanc des yeux *)
-  
-  for i := 0 to 1 do
-  begin
-    cairo_arc(cr, eyes[i].x, eyes[i].y, eyes[i].radius, 0, 2 * PI);
-    cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
-    cairo_fill(cr);
-  end;
-  
-  cairo_destroy(cr);
-end;
-
-procedure CairoDraw(var AImage: TImage; const AStatic: pcairo_surface_t; const AMouseX, AMouseY: integer; const AMood: TMood; const ABlink: double);
+procedure Draw(var AImage: TImage; const AStatic: pcairo_surface_t; const AMouseX, AMouseY: integer; const AMood: TMood; const ABlink: double);
 var
   sf: pcairo_surface_t;
   cr: pcairo_t;
   stride: integer;
-  i, w, h: integer;
+  i: integer;
+  width, height: integer;
 begin
-  w := AImage.Header.Width;
-  h := AImage.Header.Height;
+  width := AImage.Header.Width;
+  height := AImage.Header.Height;
   
-  stride := cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, w);
+  stride := cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, width);
   
-  sf := cairo_image_surface_create_for_data(@AImage.Data[0], CAIRO_FORMAT_ARGB32, w, h, stride);
+  sf := cairo_image_surface_create_for_data(@AImage.Data[0], CAIRO_FORMAT_ARGB32, width, height, stride);
   cr := cairo_create(sf);
   
-  (* Fond *)
-  
-  cairo_set_source_surface(cr, AStatic, 0, 0);
-  cairo_paint(cr);
-  
-  (* Yeux *)
-  
-  for i := 0 to 1 do
-  begin
-    (* Iris *)
-    cairo_arc(cr, eyes[i].dix, eyes[i].diy, eyes[i].irisRadius, 0, 2 * PI);
-    with eyes[i].irisColor do cairo_set_source_rgb(cr, r, g, b);
-    cairo_fill(cr);
-    (* Pupille *)
-    cairo_arc(cr, eyes[i].dix, eyes[i].diy, eyes[i].irisRadius * eyes[i].pupilDilation, 0, 2 * PI);
-    cairo_set_source_rgb(cr, 0.0, 0.0, 0.0);
-    cairo_fill(cr);
-  end;
-  
-  (* Clignement *)
-  
-  cairo_rectangle(cr, w / 2 - SPACE - RADIUS, h / 2 - RADIUS, (RADIUS + SPACE) * 2, RADIUS * 3 * ABlink);
-  cairo_set_source_rgb(cr, rSkin, gSkin, bSkin);
-  cairo_fill(cr);
-  
-  (* Bouche *)
-  
-  cairo_save(cr);
-  
-  case AMood of
-    mHappy:
-      begin
-        cairo_translate(cr, w / 2, h * 0.58);
-        cairo_scale(cr, RADIUS, RADIUS * 1.5);
-        cairo_arc(cr, 0.0, 0.0, 1.0, 0, PI);
-      end;
-    mConcerned:
-      begin
-        cairo_translate(cr, w / 2, h * 0.62);
-        cairo_scale(cr, RADIUS, RADIUS / 2);
-        cairo_arc(cr, 0.0, 0.0, 1.0, 0, 2 * PI);
-      end;
-    mSad:
-      begin
-        cairo_translate(cr, w / 2, h * 0.65);
-        cairo_scale(cr, RADIUS, RADIUS * 1.5);
-        cairo_arc(cr, 0.0, 0.0, 1.0, PI, 2 * PI);
-      end;
-  end;
-  
-  cairo_set_source_rgb(cr, 0.0, 0.0, 0.0);
-  cairo_fill(cr);
-  cairo_restore(cr);
-  
-  (* Objet *)
-  
-  cairo_set_source_rgb(cr, 1, 0, 0);
-  cairo_arc(cr, AMouseX, AMouseY, 5, 0, 2 * PI);
-  cairo_fill(cr);
+  Draw_(cr, AStatic, AMouseX, AMouseY, AMood, ABlink, width, height);
   
   cairo_destroy(cr);
   cairo_surface_destroy(sf);
@@ -133,24 +47,33 @@ var
 begin
   ClearDevice;
   
+  (* Visage *)
+  
   SetColor(CSkinColor);
   SetFillStyle(SolidFill, CSkinColor);
   FillEllipse(SURFACE_WIDTH div 2, SURFACE_HEIGHT div 2, 4 * RADIUS, 4 * RADIUS);
   
+  (* Yeux *)
+  
   for i := 0 to 1 do
   begin
+    (* Blanc *)
     SetColor($FFFFFF);
     SetFillStyle(SolidFill, $FFFFFF);
     FillEllipse(Round(eyes[i].x), Round(eyes[i].y), Round(eyes[i].radius), Round(eyes[i].radius));
     
+    (* Iris *)
     SetColor(AIrisColor);
     SetFillStyle(SolidFill, AIrisColor);
     FillEllipse(Round(eyes[i].dix), Round(eyes[i].diy), Round(eyes[i].irisRadius), Round(eyes[i].irisRadius));
     
+    (* Pupille *)
     SetColor(0);
     SetFillStyle(SolidFill, 0);
     FillEllipse(Round(eyes[i].dix), Round(eyes[i].diy), Round(eyes[i].irisRadius * eyes[i].pupilDilation), Round(eyes[i].irisRadius * eyes[i].pupilDilation));
   end;
+  
+  (* Objet *)
   
   SetColor($FF0000);
   SetFillStyle(SolidFill, $FF0000);
@@ -170,8 +93,9 @@ var
   LKey: char;
   LExit: boolean;
   LTime, LOldTime: qword;
-  //LColor: TColor;
+{$IFNDEF USE_CAIRO}
   LIrisColor: longword;
+{$ENDIF}
   LMood: TMood;
   LBlink: double;
   LDist: double;
@@ -202,15 +126,13 @@ begin
   SetBkColor($333333);
   LBlink := 0.0;
   
-  (* ======================================================================== *)
-  
+{$IFNDEF USE_CAIRO}
   with eyes[0].irisColor do LIrisColor := Round(255 * r) shl 16 or Round(255 * g) shl 8 or Round(255 * r);
-  
-  (* ======================================================================== *)
+{$ENDIF}
   
 {$IFDEF USE_CAIRO}
   LStatic := StaticSurface(SURFACE_WIDTH, SURFACE_HEIGHT);
-  LImage := CreateImage(SURFACE_WIDTH, SURFACE_HEIGHT);
+  LImage  := CreateImage(SURFACE_WIDTH, SURFACE_HEIGHT);
 {$ENDIF}
   
   MouseX := -1;
@@ -251,7 +173,7 @@ begin
     (* Redraw *)
     
 {$IFDEF USE_CAIRO}
-    CairoDraw(LImage^, LStatic, MouseX, MouseY, LMood, LBlink);
+    Draw(LImage^, LStatic, MouseX, MouseY, LMood, LBlink);
     PutImage(0, 0, LImage^, NormalPut);
 {$ELSE}
     SetActivePage(LPage);
@@ -285,5 +207,4 @@ begin
   FreeImage(LImage, SURFACE_WIDTH, SURFACE_HEIGHT);
   cairo_surface_destroy(LStatic);
 {$ENDIF}
-  
 end.

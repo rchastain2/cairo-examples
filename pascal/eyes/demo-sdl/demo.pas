@@ -13,46 +13,14 @@ uses
   Color;
 
 {$IFDEF USE_CAIRO}
-function StaticSurface(const AWidth, AHeight: integer): pcairo_surface_t;
-var
-  cr: pcairo_t;
-  i: integer;
-begin
-  result := cairo_image_surface_create(CAIRO_FORMAT_ARGB32, AWidth, AHeight);
-  cr := cairo_create(result);
-  
-  cairo_set_source_rgb(cr, 0.2, 0.2, 0.2);
-  cairo_paint(cr);
-  
-  (* Visage *)
-  
-  cairo_arc(cr, AWidth / 2, AHeight / 2, 4 * RADIUS, 0, 2 * PI);
-  cairo_set_source_rgb(cr, rSkin, gSkin, bSkin);
-  cairo_fill(cr);
-  
-  (* Blanc des yeux *)
-  
-  for i := 0 to 1 do
-  begin
-    cairo_arc(cr, eyes[i].x, eyes[i].y, eyes[i].radius, 0, 2 * PI);
-    cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
-    cairo_fill(cr);
-  end;
-  
-  cairo_destroy(cr);
-end;
-
-procedure CairoDraw(const ATexture: pSDL_Texture; const AStatic: pcairo_surface_t; const AWidth, AHeight, AMouseX, AMouseY: integer; const AMood: TMood; const ABlink: double);
+procedure Draw(const ATexture: pSDL_Texture; const AStatic: pcairo_surface_t; const AWidth, AHeight, AMouseX, AMouseY: integer; const AMood: TMood; const ABlink: double);
 var
   sf: pcairo_surface_t;
   cr: pcairo_t;
   LPixels: pointer;
   LPitch: integer;
-  i, w, h: integer;
+  i: integer;
 begin
-  w := AWidth;
-  h := AHeight;
-  
   SDL_LockTexture(ATexture, nil, @LPixels, @LPitch);
   
   sf := cairo_image_surface_create_for_data(LPixels, CAIRO_FORMAT_ARGB32, AWidth, AHeight, LPitch);
@@ -60,63 +28,7 @@ begin
   cr := cairo_create(sf);
   (* Fond *)
   
-  cairo_set_source_surface(cr, AStatic, 0, 0);
-  cairo_paint(cr);
-  
-  (* Yeux *)
-  
-  for i := 0 to 1 do
-  begin
-    (* Iris *)
-    cairo_arc(cr, eyes[i].dix, eyes[i].diy, eyes[i].irisRadius, 0, 2 * PI);
-    with eyes[i].irisColor do cairo_set_source_rgb(cr, r, g, b);
-    cairo_fill(cr);
-    (* Pupille *)
-    cairo_arc(cr, eyes[i].dix, eyes[i].diy, eyes[i].irisRadius * eyes[i].pupilDilation, 0, 2 * PI);
-    cairo_set_source_rgb(cr, 0.0, 0.0, 0.0);
-    cairo_fill(cr);
-  end;
-  
-  (* Clignement *)
-  
-  cairo_rectangle(cr, w / 2 - SPACE - RADIUS, h / 2 - RADIUS, (RADIUS + SPACE) * 2, RADIUS * 3 * ABlink);
-  cairo_set_source_rgb(cr, rSkin, gSkin, bSkin);
-  cairo_fill(cr);
-  
-  (* Bouche *)
-  
-  cairo_save(cr);
-  
-  case AMood of
-    mHappy:
-      begin
-        cairo_translate(cr, w / 2, h * 0.58);
-        cairo_scale(cr, RADIUS, RADIUS * 1.5);
-        cairo_arc(cr, 0.0, 0.0, 1.0, 0, PI);
-      end;
-    mConcerned:
-      begin
-        cairo_translate(cr, w / 2, h * 0.62);
-        cairo_scale(cr, RADIUS, RADIUS / 2);
-        cairo_arc(cr, 0.0, 0.0, 1.0, 0, 2 * PI);
-      end;
-    mSad:
-      begin
-        cairo_translate(cr, w / 2, h * 0.65);
-        cairo_scale(cr, RADIUS, RADIUS * 1.5);
-        cairo_arc(cr, 0.0, 0.0, 1.0, PI, 2 * PI);
-      end;
-  end;
-  
-  cairo_set_source_rgb(cr, 0.0, 0.0, 0.0);
-  cairo_fill(cr);
-  cairo_restore(cr);
-  
-  (* Objet *)
-  
-  cairo_set_source_rgb(cr, 1, 0, 0);
-  cairo_arc(cr, AMouseX, AMouseY, 5, 0, 2 * PI);
-  cairo_fill(cr);
+  Draw_(cr, AStatic, AMouseX, AMouseY, AMood, ABlink, AWidth, AHeight);
   
   cairo_destroy(cr);
   cairo_surface_destroy(sf);
@@ -130,7 +42,7 @@ begin
   SDL_RenderClear(ARenderer);
   
   filledCircleRGBA(ARenderer, AMouseX, AMouseY, 3, 255, 0, 0, 255);
-  aacircleRGBA(ARenderer, AMouseX, AMouseY, 3, 255, 0, 0, 255);
+  //aacircleRGBA(ARenderer, AMouseX, AMouseY, 3, 255, 0, 0, 255);
 end;
 {$ENDIF}
 
@@ -146,7 +58,7 @@ var
   
   LMouseX, LMouseY: integer;
 {$IFDEF USE_CAIRO}
-  LStaticSurface: pcairo_surface_t;
+  LStatic: pcairo_surface_t;
 {$ENDIF}
   LMood: TMood;
   LBlink: double;
@@ -159,7 +71,7 @@ begin
   LBlink := 0.0;
   
 {$IFDEF USE_CAIRO}
-  LStaticSurface := StaticSurface(SURFACE_WIDTH, SURFACE_HEIGHT);
+  LStatic := StaticSurface(SURFACE_WIDTH, SURFACE_HEIGHT);
 {$ENDIF}
   
   if SDL_Init(SDL_INIT_VIDEO) < 0 then
@@ -255,7 +167,7 @@ begin
     LOldTime := LTime;
     
 {$IFDEF USE_CAIRO}
-    CairoDraw(LTexture, LStaticSurface, LRendererWidth, LRendererHeight, LMouseX, LMouseY, LMood, LBlink);
+    Draw(LTexture, LStatic, LRendererWidth, LRendererHeight, LMouseX, LMouseY, LMood, LBlink);
     SDL_RenderCopy(LRenderer, LTexture, nil, nil);
 {$ELSE}
     Draw(LRenderer, LMouseX, LMouseY);
@@ -274,6 +186,6 @@ begin
   SDL_Quit;
   
 {$IFDEF USE_CAIRO}
-  cairo_surface_destroy(LStaticSurface);
+  cairo_surface_destroy(LStatic);
 {$ENDIF}
 end.
