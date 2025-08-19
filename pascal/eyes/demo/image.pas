@@ -23,7 +23,8 @@ type
   PImage = ^TImage;
 
 function CreateImage(const AWidth, AHeight: integer): PImage;
-procedure FreeImage(const AImage: PImage; const AWidth, AHeight: integer);
+procedure FreeImage(const AImage: PImage; const AWidth, AHeight: integer); overload;
+procedure FreeImage(const AImage: PImage); overload;
 
 implementation
 
@@ -40,6 +41,11 @@ end;
 procedure FreeImage(const AImage: PImage; const AWidth, AHeight: integer);
 begin
   FreeMem(AImage, SizeOf(THeader) + COLOR_WIDTH * AWidth * AHeight);
+end;
+
+procedure FreeImage(const AImage: PImage);
+begin
+  FreeMem(AImage);
 end;
 
 end.

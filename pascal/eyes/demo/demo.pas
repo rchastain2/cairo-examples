@@ -39,7 +39,7 @@ begin
   cairo_surface_destroy(sf);
 end;
 {$ELSE}
-procedure Draw(const MouseX, MouseY: integer; const AIrisColor: longword);
+procedure Draw(const MouseX, MouseY: integer; const AIrisColor: longword; const AMood: TMood; const ABlink: double);
 const
   CSkinColor = 232 shl 16 or 209 shl 8 or 171;
 var
@@ -71,6 +71,24 @@ begin
     SetColor(0);
     SetFillStyle(SolidFill, 0);
     FillEllipse(Round(eyes[i].dix), Round(eyes[i].diy), Round(eyes[i].irisRadius * eyes[i].pupilDilation), Round(eyes[i].irisRadius * eyes[i].pupilDilation));
+  end;
+  
+  (* Clignement *)
+  
+  SetFillStyle(SolidFill, CSkinColor);
+  Bar(SURFACE_WIDTH div 2 - SPACE - RADIUS, SURFACE_HEIGHT div 2 - RADIUS, SURFACE_WIDTH div 2 + RADIUS + SPACE, SURFACE_HEIGHT div 2 - RADIUS + Round(RADIUS * 3 * ABlink));
+  
+  (* Bouche *)
+  
+  SetColor($000000);
+  SetFillStyle(SolidFill, $000000);
+  case AMood of
+    mHappy:
+      Sector(SURFACE_WIDTH div 2, Round(SURFACE_HEIGHT * 0.58), 180, 360, Round(RADIUS * 1.5), Round(RADIUS * 1.5));
+    mConcerned:
+      Sector(SURFACE_WIDTH div 2, Round(SURFACE_HEIGHT * 0.62), 0, 360, RADIUS, RADIUS div 2);
+    mSad:
+      Sector(SURFACE_WIDTH div 2, Round(SURFACE_HEIGHT * 0.65), 0, 180, Round(RADIUS * 1.5), Round(RADIUS * 1.5));
   end;
   
   (* Objet *)
@@ -177,7 +195,7 @@ begin
     PutImage(0, 0, LImage^, NormalPut);
 {$ELSE}
     SetActivePage(LPage);
-    Draw(MouseX, MouseY, LIrisColor);
+    Draw(MouseX, MouseY, LIrisColor, LMood, LBlink);
     SetVisualPage(LPage);
     LPage := 1 - LPage;
 {$ENDIF}
@@ -204,7 +222,8 @@ begin
   CloseGraph;
   
 {$IFDEF USE_CAIRO}
-  FreeImage(LImage, SURFACE_WIDTH, SURFACE_HEIGHT);
+ {FreeImage(LImage, SURFACE_WIDTH, SURFACE_HEIGHT);}
+  FreeImage(LImage);
   cairo_surface_destroy(LStatic);
 {$ENDIF}
 end.

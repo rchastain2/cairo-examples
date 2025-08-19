@@ -41,7 +41,7 @@ var
 
 {$IFDEF USE_CAIRO}
 function StaticSurface(const AWidth, AHeight: integer): pcairo_surface_t;
-procedure Draw1(cr: pcairo_t; const AStatic: pcairo_surface_t; const AMouseX, AMouseY: integer; const AMood: TMood; const ABlink: double; const AWidth, AHeight: integer);
+procedure Draw_(cr: pcairo_t; const AStatic: pcairo_surface_t; const AMouseX, AMouseY: integer; const AMood: TMood; const ABlink: double; const AWidth, AHeight: integer);
 {$ENDIF}
 
 implementation
