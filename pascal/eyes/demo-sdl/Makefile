@@ -4,6 +4,7 @@ PC := fpc
 PFLAGS := -Mobjfpc
 PFLAGS += -Sh
 PFLAGS += -Fu..
+PFLAGS += -B
 
 ifdef DEBUG
 PFLAGS += -ghl

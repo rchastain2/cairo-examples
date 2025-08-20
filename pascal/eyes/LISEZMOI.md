@@ -3,7 +3,7 @@
 
 Visage animé dont les yeux suivent le curseur de la souris. Adaptation en Pascal d'une [animation LÖVE][1].
 
-![Capture d'écran](screenshots/01.png)
+![Capture d'écran](screenshots/ptcgraph-cairo.png)
 
 Programme basé sur ptcGraph et Cairo. (La méthode employée pour dessiner avec Cairo dans une fenêtre ptcGraph provient de [cette discussion][2].)
 

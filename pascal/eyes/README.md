@@ -3,7 +3,7 @@
 
 Animated face, whose eyes follow mouse cursor. Adapted from a [LÖVE animation][1].
 
-![Screenshot](screenshots/01.png)
+![Screenshot](screenshots/ptcgraph-cairo.png)
 
 ## Build
 

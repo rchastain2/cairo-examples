@@ -23,17 +23,13 @@ var
   cr: pcairo_t;
   stride: integer;
   i: integer;
-  width, height: integer;
 begin
-  width := AImage.Header.Width;
-  height := AImage.Header.Height;
+  stride := cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, AImage.Header.Width);
   
-  stride := cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, width);
-  
-  sf := cairo_image_surface_create_for_data(@AImage.Data[0], CAIRO_FORMAT_ARGB32, width, height, stride);
+  sf := cairo_image_surface_create_for_data(@AImage.Data[0], CAIRO_FORMAT_ARGB32, AImage.Header.Width, AImage.Header.Height, stride);
   cr := cairo_create(sf);
   
-  Draw_(cr, AStatic, AMouseX, AMouseY, AMood, ABlink, width, height);
+  Draw_(cr, AStatic, AMouseX, AMouseY, AMood, ABlink);
   
   cairo_destroy(cr);
   cairo_surface_destroy(sf);
@@ -149,7 +145,7 @@ begin
 {$ENDIF}
   
 {$IFDEF USE_CAIRO}
-  LStatic := StaticSurface(SURFACE_WIDTH, SURFACE_HEIGHT);
+  LStatic := StaticSurface;
   LImage  := CreateImage(SURFACE_WIDTH, SURFACE_HEIGHT);
 {$ENDIF}
   

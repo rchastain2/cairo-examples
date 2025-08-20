@@ -40,8 +40,8 @@ var
   eyes: array[0..1] of TEye;
 
 {$IFDEF USE_CAIRO}
-function StaticSurface(const AWidth, AHeight: integer): pcairo_surface_t;
-procedure Draw_(cr: pcairo_t; const AStatic: pcairo_surface_t; const AMouseX, AMouseY: integer; const AMood: TMood; const ABlink: double; const AWidth, AHeight: integer);
+function StaticSurface: pcairo_surface_t;
+procedure Draw_(cr: pcairo_t; const AStatic: pcairo_surface_t; const AMouseX, AMouseY: integer; const AMood: TMood; const ABlink: double);
 {$ENDIF}
 
 implementation
@@ -106,12 +106,12 @@ end;
 (* ========================================================================== *)
 
 {$IFDEF USE_CAIRO}
-function StaticSurface(const AWidth, AHeight: integer): pcairo_surface_t;
+function StaticSurface: pcairo_surface_t;
 var
   cr: pcairo_t;
   i: integer;
 begin
-  result := cairo_image_surface_create(CAIRO_FORMAT_ARGB32, AWidth, AHeight);
+  result := cairo_image_surface_create(CAIRO_FORMAT_ARGB32, SURFACE_WIDTH, SURFACE_HEIGHT);
   cr := cairo_create(result);
   
   cairo_set_source_rgb(cr, 0.2, 0.2, 0.2);
@@ -119,7 +119,7 @@ begin
   
   (* Visage *)
   
-  cairo_arc(cr, AWidth / 2, AHeight / 2, 4 * RADIUS, 0, 2 * PI);
+  cairo_arc(cr, SURFACE_WIDTH / 2, SURFACE_HEIGHT / 2, 4 * RADIUS, 0, 2 * PI);
   cairo_set_source_rgb(cr, rSkin, gSkin, bSkin);
   cairo_fill(cr);
   
@@ -135,7 +135,7 @@ begin
   cairo_destroy(cr);
 end;
 
-procedure Draw_(cr: pcairo_t; const AStatic: pcairo_surface_t; const AMouseX, AMouseY: integer; const AMood: TMood; const ABlink: double; const AWidth, AHeight: integer);
+procedure Draw_(cr: pcairo_t; const AStatic: pcairo_surface_t; const AMouseX, AMouseY: integer; const AMood: TMood; const ABlink: double);
 var
   i: integer;
 begin
@@ -161,7 +161,7 @@ begin
   
   (* Clignement *)
   
-  cairo_rectangle(cr, AWidth / 2 - SPACE - RADIUS, AHeight / 2 - RADIUS, (RADIUS + SPACE) * 2, RADIUS * 3 * ABlink);
+  cairo_rectangle(cr, SURFACE_WIDTH / 2 - SPACE - RADIUS, SURFACE_HEIGHT / 2 - RADIUS, (RADIUS + SPACE) * 2, RADIUS * 3 * ABlink);
   cairo_set_source_rgb(cr, rSkin, gSkin, bSkin);
   cairo_fill(cr);
   
@@ -172,19 +172,19 @@ begin
   case AMood of
     mHappy:
       begin
-        cairo_translate(cr, AWidth / 2, AHeight * 0.58);
+        cairo_translate(cr, SURFACE_WIDTH / 2, SURFACE_HEIGHT * 0.58);
         cairo_scale(cr, RADIUS, RADIUS * 1.5);
         cairo_arc(cr, 0.0, 0.0, 1.0, 0, PI);
       end;
     mConcerned:
       begin
-        cairo_translate(cr, AWidth / 2, AHeight * 0.62);
+        cairo_translate(cr, SURFACE_WIDTH / 2, SURFACE_HEIGHT * 0.62);
         cairo_scale(cr, RADIUS, RADIUS / 2);
         cairo_arc(cr, 0.0, 0.0, 1.0, 0, 2 * PI);
       end;
     mSad:
       begin
-        cairo_translate(cr, AWidth / 2, AHeight * 0.65);
+        cairo_translate(cr, SURFACE_WIDTH / 2, SURFACE_HEIGHT * 0.65);
         cairo_scale(cr, RADIUS, RADIUS * 1.5);
         cairo_arc(cr, 0.0, 0.0, 1.0, PI, 2 * PI);
       end;

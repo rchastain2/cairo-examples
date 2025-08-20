@@ -13,7 +13,7 @@ uses
   Color;
 
 {$IFDEF USE_CAIRO}
-procedure Draw(const ATexture: pSDL_Texture; const AStatic: pcairo_surface_t; const AWidth, AHeight, AMouseX, AMouseY: integer; const AMood: TMood; const ABlink: double);
+procedure Draw(const ATexture: pSDL_Texture; const AStatic: pcairo_surface_t; const AMouseX, AMouseY: integer; const AMood: TMood; const ABlink: double);
 var
   sf: pcairo_surface_t;
   cr: pcairo_t;
@@ -23,12 +23,12 @@ var
 begin
   SDL_LockTexture(ATexture, nil, @LPixels, @LPitch);
   
-  sf := cairo_image_surface_create_for_data(LPixels, CAIRO_FORMAT_ARGB32, AWidth, AHeight, LPitch);
+  sf := cairo_image_surface_create_for_data(LPixels, CAIRO_FORMAT_ARGB32, SURFACE_WIDTH, SURFACE_HEIGHT, LPitch);
   
   cr := cairo_create(sf);
   (* Fond *)
   
-  Draw_(cr, AStatic, AMouseX, AMouseY, AMood, ABlink, AWidth, AHeight);
+  Draw_(cr, AStatic, AMouseX, AMouseY, AMood, ABlink);
   
   cairo_destroy(cr);
   cairo_surface_destroy(sf);
@@ -36,13 +36,50 @@ begin
   SDL_UnlockTexture(ATexture);
 end;
 {$ELSE}
-procedure Draw(const ARenderer: pSDL_Renderer; const AMouseX, AMouseY: integer);
+procedure Draw(const ARenderer: pSDL_Renderer; const AMouseX, AMouseY: integer; const AMood: TMood; const ABlink: double);
+var
+  i: integer;
 begin
   SDL_SetRenderDrawColor(ARenderer, 51, 51, 51, 255);
   SDL_RenderClear(ARenderer);
   
+  (* Visage *)
+  
+  filledCircleRGBA(ARenderer, SURFACE_WIDTH div 2, SURFACE_HEIGHT div 2, 4 * RADIUS, 232, 209, 171, 255);
+  
+  (* Yeux *)
+  
+  for i := 0 to 1 do
+  begin
+    (* Blanc *)
+    filledCircleRGBA(ARenderer, Round(eyes[i].x), Round(eyes[i].y), Round(eyes[i].radius), 255, 255, 255, 255);
+    
+    (* Iris *)
+    with eyes[0].irisColor do
+      filledCircleRGBA(ARenderer, Round(eyes[i].dix), Round(eyes[i].diy), Round(eyes[i].irisRadius), Round(255 * r), Round(255 * g), Round(255 * r), 255);
+    
+    (* Pupille *)
+    filledCircleRGBA(ARenderer, Round(eyes[i].dix), Round(eyes[i].diy), Round(eyes[i].irisRadius * eyes[i].pupilDilation), 0, 0, 0, 255);
+  end;
+  
+  (* Clignement *)
+  
+  boxRGBA(ARenderer, SURFACE_WIDTH div 2 - SPACE - RADIUS, SURFACE_HEIGHT div 2 - RADIUS, SURFACE_WIDTH div 2 + RADIUS + SPACE, SURFACE_HEIGHT div 2 - RADIUS + Round(RADIUS * 3 * ABlink), 232, 209, 171, 255);
+  
+  (* Bouche *)
+  
+  case AMood of
+    mHappy:
+      filledPieRGBA(ARenderer, SURFACE_WIDTH div 2, Round(SURFACE_HEIGHT * 0.58), Round(RADIUS * 1.5), 0, 180, 0, 0, 0, 255);
+    mConcerned:
+      filledEllipseRGBA(ARenderer, SURFACE_WIDTH div 2, Round(SURFACE_HEIGHT * 0.62), RADIUS, RADIUS div 2, 0,0,0,255);
+    mSad:
+      filledPieRGBA(ARenderer, SURFACE_WIDTH div 2, Round(SURFACE_HEIGHT * 0.65), Round(RADIUS * 1.5), 180, 360, 0, 0, 0, 255);
+  end;
+  
+  (* Objet *)
+  
   filledCircleRGBA(ARenderer, AMouseX, AMouseY, 3, 255, 0, 0, 255);
-  //aacircleRGBA(ARenderer, AMouseX, AMouseY, 3, 255, 0, 0, 255);
 end;
 {$ENDIF}
 
@@ -71,7 +108,7 @@ begin
   LBlink := 0.0;
   
 {$IFDEF USE_CAIRO}
-  LStatic := StaticSurface(SURFACE_WIDTH, SURFACE_HEIGHT);
+  LStatic := StaticSurface;
 {$ENDIF}
   
   if SDL_Init(SDL_INIT_VIDEO) < 0 then
@@ -167,10 +204,10 @@ begin
     LOldTime := LTime;
     
 {$IFDEF USE_CAIRO}
-    Draw(LTexture, LStatic, LRendererWidth, LRendererHeight, LMouseX, LMouseY, LMood, LBlink);
+    Draw(LTexture, LStatic, LMouseX, LMouseY, LMood, LBlink);
     SDL_RenderCopy(LRenderer, LTexture, nil, nil);
 {$ELSE}
-    Draw(LRenderer, LMouseX, LMouseY);
+    Draw(LRenderer, LMouseX, LMouseY, LMood, LBlink);
 {$ENDIF}
     
     SDL_RenderPresent(LRenderer);

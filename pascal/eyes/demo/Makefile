@@ -5,6 +5,7 @@ PFLAGS := -Mobjfpc
 PFLAGS += -Sh
 PFLAGS += -ghl
 PFLAGS += -Fu..
+PFLAGS += -B
 
 ifdef CAIRO
 PFLAGS += -dUSE_CAIRO

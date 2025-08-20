@@ -3,7 +3,7 @@
 
 Animiertes Gesicht, dessen Augen dem Mauszeiger folgen. Adaptiert von einer [LÖVE-Animation][1].
 
-![Screenshot](screenshots/01.png)
+![Screenshot](screenshots/ptcgraph-cairo.png)
 
 ## Erstellen
 
