@@ -1,33 +1,33 @@
 object Form1: TForm1
   Left = 241
-  Height = 163
+  Height = 180
   Top = 161
-  Width = 128
+  Width = 144
   Caption = 'Form1'
-  ClientHeight = 163
-  ClientWidth = 128
+  ClientHeight = 180
+  ClientWidth = 144
   LCLVersion = '4.4.0.0'
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  object PaintBox1: TPaintBox
-    Left = 0
+  object PB1: TPaintBox
+    Left = 8
     Height = 128
-    Top = 0
+    Top = 8
     Width = 128
   end
-  object Button1: TButton
-    Left = 48
-    Height = 25
-    Top = 133
-    Width = 75
-    Caption = 'Lancer'
+  object BT1: TButton
+    Left = 8
+    Height = 28
+    Top = 144
+    Width = 128
+    Caption = 'Start'
     TabOrder = 0
-    OnClick = Button1Click
+    OnClick = BT1Click
   end
-  object Timer1: TTimer
+  object TM1: TTimer
     Enabled = False
     Interval = 80
-    OnTimer = Timer1Timer
+    OnTimer = TM1Timer
     Left = 144
     Top = 248
   end

@@ -15,13 +15,13 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
-    Button1: TButton;
-    PaintBox1: TPaintBox;
-    Timer1: TTimer;
-    procedure Button1Click(Sender: TObject);
+    BT1: TButton;
+    PB1: TPaintBox;
+    TM1: TTimer;
+    procedure BT1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure Timer1Timer(Sender: TObject);
+    procedure TM1Timer(Sender: TObject);
   private
     { private declarations }
     type
@@ -29,13 +29,13 @@ type
         x, y: double;
       end;
     var
-    fBitmap: TBitmap;
-    fWidth, fHeight: integer;
-    fHour: integer;
-    fSurface: pcairo_surface_t;
-    fContext: pcairo_t;
-    fColor, fBkColor: TCairoColor;
-    fPoints: array[0..31] of TCairoPoint;
+    FBitmap: TBitmap;
+    FWidth, FHeight: integer;
+    FHour: integer;
+    FSurf: pcairo_surface_t;
+    FCairo: pcairo_t;
+    FColor, FBkColor: TCairoColor;
+    FPoints: array[0..31] of TCairoPoint;
     procedure DrawToPaintBox;
   public
     { public declarations }
@@ -52,37 +52,38 @@ implementation
 
 { TForm1 }
 
-procedure TForm1.Button1Click(Sender: TObject);
+procedure TForm1.BT1Click(Sender: TObject);
+const
+  CCaption: array[boolean] of string = ('Start', 'Stop');
 begin
-  Timer1.Enabled := TRUE;
+  TM1.Enabled := not TM1.Enabled;
+  BT1.Caption := CCaption[TM1.Enabled];
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 var
   i, j, k: integer;
 begin
-  fBitmap := TBitmap.Create;
-  fWidth := PaintBox1.Width;
-  fHeight := PaintBox1.Height;
-  fBitmap.SetSize(fWidth, fHeight);
-  fHour := 0;
-  (*
-  fSurface := cairo_win32_surface_create(fBitmap.Canvas.Handle);
-  *)
+  FBitmap := TBitmap.Create;
+  FWidth := PB1.Width;
+  FHeight := PB1.Height;
+  FBitmap.SetSize(FWidth, FHeight);
+  FHour := 0;
+
 { https://www.lazarusforum.de/viewtopic.php?p=133936#p133936 }
-  fSurface := cairo_image_surface_create_for_data(
-    fBitmap.RawImage.Data,
+  FSurf := cairo_image_surface_create_for_data(
+    FBitmap.RawImage.Data,
     CAIRO_FORMAT_ARGB32,
-    fBitmap.Width,
-    fBitmap.Height,
-    cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, fBitmap.Width)
+    FBitmap.Width,
+    FBitmap.Height,
+    cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, FBitmap.Width)
   );
-  fContext := cairo_create(fSurface);
-  cairo_scale(fContext, fWidth, fHeight);
-  cairo_translate(fContext, 0.5, 0.5);
-  cairo_set_line_width(fContext, 0.01);
-  fColor.Create(SNOW);
-  fBkColor.Create(MIDNIGHTBLUE);
+  FCairo := cairo_create(FSurf);
+  cairo_scale(FCairo, FWidth, FHeight);
+  cairo_translate(FCairo, 0.5, 0.5);
+  cairo_set_line_width(FCairo, 0.01);
+  FColor.Create(SNOW);
+  FBkColor.Create(MIDNIGHTBLUE);
   
   k := 0;
   for i := 0 to 11 do
@@ -90,15 +91,15 @@ begin
       4..7:
         for j := 0 to 3 do
         begin
-          fPoints[k].x := 0.4 * Cos((PI / 6) * i + (PI / 24) * j - PI / 2);
-          fPoints[k].y := 0.4 * Sin((PI / 6) * i + (PI / 24) * j - PI / 2);
+          FPoints[k].x := 0.4 * Cos((PI / 6) * i + (PI / 24) * j - PI / 2);
+          FPoints[k].y := 0.4 * Sin((PI / 6) * i + (PI / 24) * j - PI / 2);
           Inc(k);
         end;
       else
         for j := 0 to 1 do
         begin
-          fPoints[k].x := 0.4 * Cos((PI / 6) * i + (PI / 12) * j - PI / 2);
-          fPoints[k].y := 0.4 * Sin((PI / 6) * i + (PI / 12) * j - PI / 2);
+          FPoints[k].x := 0.4 * Cos((PI / 6) * i + (PI / 12) * j - PI / 2);
+          FPoints[k].y := 0.4 * Sin((PI / 6) * i + (PI / 12) * j - PI / 2);
           Inc(k);
         end;
     end;
@@ -108,47 +109,47 @@ end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-  cairo_destroy(fContext);
-  cairo_surface_destroy(fSurface);
-  fBitmap.Destroy;
+  cairo_destroy(FCairo);
+  cairo_surface_destroy(FSurf);
+  FBitmap.Destroy;
 end;
 
-procedure TForm1.Timer1Timer(Sender: TObject);
+procedure TForm1.TM1Timer(Sender: TObject);
 begin
-  Timer1.Enabled := FALSE;
+  TM1.Enabled := FALSE;
   DrawToPaintBox;
-  fHour := (fHour + 1) mod 32;
-  Timer1.Enabled := TRUE;
+  FHour := (FHour + 1) mod 32;
+  TM1.Enabled := TRUE;
 end;
 
 procedure TForm1.DrawToPaintBox;
 var
   i: integer;
 begin
-  fBitmap.BeginUpdate;
+  FBitmap.BeginUpdate;
 
-  with fBkColor do
-    cairo_set_source_rgba(fContext, r, g, b, 1.00);
-  cairo_paint(fContext);
+  with FBkColor do
+    cairo_set_source_rgba(FCairo, r, g, b, 1.00);
+  cairo_paint(FCairo);
 
-  with fColor do
-    cairo_set_source_rgba(fContext, r, g, b, 1.00);
+  with FColor do
+    cairo_set_source_rgba(FCairo, r, g, b, 1.00);
   for i := 0 to 7 do
   begin
     cairo_arc(
-      fContext,
-      fPoints[(fHour - i + 32) mod 32].x,
-      fPoints[(fHour - i + 32) mod 32].y,
+      FCairo,
+      FPoints[(FHour - i + 32) mod 32].x,
+      FPoints[(FHour - i + 32) mod 32].y,
       0.02,
       0,
       2 * PI
     );
 
-    cairo_fill(fContext);
+    cairo_fill(FCairo);
   end;
 
-  fBitmap.EndUpdate;
-  PaintBox1.Canvas.Draw(0, 0, fBitmap);
+  FBitmap.EndUpdate;
+  PB1.Canvas.Draw(0, 0, FBitmap);
 end;
 
 end.
