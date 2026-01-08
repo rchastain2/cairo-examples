@@ -26,7 +26,7 @@ implementation
 {$R *.lfm}
 
 uses
-  Cairo, CairoWin32;
+  Cairo{, CairoWin32};
 
 { TForm1 }
 
@@ -43,7 +43,18 @@ begin
   Buffer := TBitmap.Create;
   Buffer.SetSize(w, h);
 
+  (*
   surface := cairo_win32_surface_create(Buffer.Canvas.Handle);
+  *)
+
+{ https://www.lazarusforum.de/viewtopic.php?p=133936#p133936 }
+  surface := cairo_image_surface_create_for_data(
+    Buffer.RawImage.Data,
+    CAIRO_FORMAT_ARGB32,
+    Buffer.Width,
+    Buffer.Height,
+    cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, Buffer.Width)
+  );
 
   cr := cairo_create (surface);
 

@@ -6,7 +6,7 @@ object Form1: TForm1
   Caption = 'Form1'
   ClientHeight = 320
   ClientWidth = 320
-  LCLVersion = '1.4.0.4'
+  LCLVersion = '4.4.0.0'
   object PaintBox1: TPaintBox
     Left = 0
     Height = 320

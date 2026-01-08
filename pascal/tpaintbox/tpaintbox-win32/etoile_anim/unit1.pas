@@ -49,9 +49,7 @@ implementation
 {$R *.lfm}
 
 uses
-  Cairo, CairoWin32;
-
-(* http://www.eschecs.fr/fichiers/freebasic/cairodll.zip *)
+  Cairo{, CairoWin32};
 
 { Utils }
 
@@ -121,7 +119,19 @@ begin
 
   Buffer.SetSize(w, h);
 
+  (*
   s := cairo_win32_surface_create(Buffer.Canvas.Handle); // <---
+  *)
+
+{ https://www.lazarusforum.de/viewtopic.php?p=133936#p133936 }
+  s := cairo_image_surface_create_for_data(
+    Buffer.RawImage.Data,
+    CAIRO_FORMAT_ARGB32,
+    Buffer.Width,
+    Buffer.Height,
+    cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, Buffer.Width)
+  );
+
   c := cairo_create(s);
   cairo_scale(c, w, h); // <---
   cairo_translate(c, 1 / 2, 1 / 2);

@@ -8,7 +8,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  StdCtrls, Cairo, CairoWin32, CairoColor in '..\cairocolor.pas';
+  StdCtrls, Cairo, CairoColor;
 
 type
 
@@ -66,7 +66,17 @@ begin
   fHeight := PaintBox1.Height;
   fBitmap.SetSize(fWidth, fHeight);
   fHour := 0;
+  (*
   fSurface := cairo_win32_surface_create(fBitmap.Canvas.Handle);
+  *)
+{ https://www.lazarusforum.de/viewtopic.php?p=133936#p133936 }
+  fSurface := cairo_image_surface_create_for_data(
+    fBitmap.RawImage.Data,
+    CAIRO_FORMAT_ARGB32,
+    fBitmap.Width,
+    fBitmap.Height,
+    cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, fBitmap.Width)
+  );
   fContext := cairo_create(fSurface);
   cairo_scale(fContext, fWidth, fHeight);
   cairo_translate(fContext, 0.5, 0.5);

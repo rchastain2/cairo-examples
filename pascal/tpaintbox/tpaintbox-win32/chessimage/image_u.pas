@@ -36,7 +36,7 @@ implementation
 {$R *.lfm}
 
 uses
-  Cairo, CairoWin32, StrUtils;
+  Cairo{, CairoWin32}, StrUtils;
 
 { TForm1 }
   
@@ -65,7 +65,17 @@ begin
   h := pbChessboard.Height;
   FBitmap := TBitmap.Create;
   FBitmap.SetSize(w, h);
+  (*
   LSurf := cairo_win32_surface_create(FBitmap.Canvas.Handle);
+  *)
+{ https://www.lazarusforum.de/viewtopic.php?p=133936#p133936 }
+  LSurf := cairo_image_surface_create_for_data(
+    FBitmap.RawImage.Data,
+    CAIRO_FORMAT_ARGB32,
+    FBitmap.Width,
+    FBitmap.Height,
+    cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, FBitmap.Width)
+  );
   LCairo := cairo_create(LSurf);
   cairo_set_source_rgb(LCairo, 1, 1, 1);
   cairo_paint(LCairo);

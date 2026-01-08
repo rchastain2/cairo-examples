@@ -6,9 +6,9 @@ object Form1: TForm1
   Caption = 'Form1'
   ClientHeight = 163
   ClientWidth = 128
+  LCLVersion = '4.4.0.0'
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  LCLVersion = '1.6.0.4'
   object PaintBox1: TPaintBox
     Left = 0
     Height = 128
@@ -21,14 +21,14 @@ object Form1: TForm1
     Top = 133
     Width = 75
     Caption = 'Lancer'
-    OnClick = Button1Click
     TabOrder = 0
+    OnClick = Button1Click
   end
   object Timer1: TTimer
     Enabled = False
     Interval = 80
     OnTimer = Timer1Timer
-    left = 144
-    top = 248
+    Left = 144
+    Top = 248
   end
 end
