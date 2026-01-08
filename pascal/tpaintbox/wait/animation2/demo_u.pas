@@ -48,7 +48,7 @@ implementation
 
 {$R *.lfm}
 
-{$I ..\colornames.inc}
+{$I colornames.inc}
 
 { TForm1 }
 
@@ -125,6 +125,8 @@ procedure TForm1.DrawToPaintBox;
 var
   i: integer;
 begin
+  fBitmap.BeginUpdate;
+
   with fBkColor do
     cairo_set_source_rgba(fContext, r, g, b, 1.00);
   cairo_paint(fContext);
@@ -144,7 +146,8 @@ begin
 
     cairo_fill(fContext);
   end;
-  
+
+  fBitmap.EndUpdate;
   PaintBox1.Canvas.Draw(0, 0, fBitmap);
 end;
 
