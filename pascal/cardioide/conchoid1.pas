@@ -32,29 +32,27 @@ begin
   surface := cairo_image_surface_create(CAIRO_FORMAT_ARGB32, SURFACE_WIDTH, SURFACE_HEIGHT);
   context := cairo_create(surface);
   
-  cairo_set_source_rgb(context, 1, 1, 1);
+  cairo_set_source_rgb(context, 1.0, 1.0, 1.0);
   cairo_paint(context);
 
-  cairo_scale(context, SURFACE_WIDTH, SURFACE_HEIGHT);
+  cairo_scale(context, SURFACE_HEIGHT, SURFACE_HEIGHT);
   cairo_translate(context, 1 / 2, 1 / 2);
   
   cairo_set_line_width(context, 1 / 500);
   cairo_set_line_cap(context, CAIRO_LINE_CAP_ROUND);
   cairo_set_line_join(context, CAIRO_LINE_JOIN_ROUND);
   
-  (*
-  cairo_set_source_rgb(context, 0, 0, 1);
+ {cairo_set_source_rgb(context, 0, 0, 1);
   cairo_arc(context, 0, 0, R, 0, 2 * PI);
   cairo_stroke(context);
-  *)
   
   cairo_set_source_rgb(context, 0, 0, 0);
   cairo_arc(context, X, Y, R2, 0, 2 * PI);
-  cairo_fill(context);
+  cairo_fill(context);}
   
-  a := 0;
+  a := PI / 36;
   
-  while a < 2 * PI - PI / 72 do
+  while a < 2 * PI do
   begin
     xx := R * Cos(a);
     yy := R * Sin(a);
@@ -68,12 +66,12 @@ begin
     xx2 := xx + (D / rr) * dx;
     yy2 := yy + (D / rr) * dy;
     
-    cairo_set_source_rgb(context, 0.5, 0.5, 0.5);
+    cairo_set_source_rgb(context, 1.0, 0.0, 0.0);
     cairo_move_to(context, xx1, yy1);
     cairo_line_to(context, xx2, yy2);
     cairo_stroke(context);
     
-    cairo_set_source_rgb(context, 0, 0, 0);
+    cairo_set_source_rgb(context, 0.0, 0.0, 0.0);
     cairo_arc(context, xx, yy, R2, 0, 2 * PI);
     cairo_arc(context, xx1, yy1, R2, 0, 2 * PI);
     cairo_arc(context, xx2, yy2, R2, 0, 2 * PI);
