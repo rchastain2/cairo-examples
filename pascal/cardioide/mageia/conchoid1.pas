@@ -25,7 +25,7 @@ var
 
 const
   D = 0.3;
-  R2 = 1 / 250;
+  R2 = 1 / 300;
   
 var
   dx, dy: double;
