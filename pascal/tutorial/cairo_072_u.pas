@@ -37,7 +37,7 @@ implementation
 {$R *.lfm}
 
 uses
-  Cairo, CairoWin32, knight in '.\source\knight.pas';
+  Cairo, CairoWin32, knight;
 
 { TForm1 }
 

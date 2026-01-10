@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  Cairo, CairoWin32;
+  Cairo{, CairoWin32};
 
 type
 
@@ -44,11 +44,22 @@ uses
 { TForm1 }
 
 procedure TForm1.FormCreate(Sender: TObject);
+const
+  cFormat: cairo_format_t = CAIRO_FORMAT_ARGB32;
 begin
   fBitmap := TBitmap.Create;
   fBitmap.SetSize(PaintBox1.Width, PaintBox1.Height);
 
-  fSurface := cairo_win32_surface_create(fBitmap.Canvas.Handle);
+ {fSurface := cairo_win32_surface_create(fBitmap.Canvas.Handle);}
+
+  fSurface := cairo_image_surface_create_for_data(
+    fBitmap.RawImage.Data,
+    cFormat,
+    fBitmap.Width,
+    fBitmap.Height,
+    cairo_format_stride_for_width(cFormat, fBitmap.Width)
+  );
+
   fContext := cairo_create(fSurface);
   cairo_scale(fContext, fBitmap.Width, 2 * fBitmap.Height);
   cairo_translate(fContext, 0.5, 0.1);

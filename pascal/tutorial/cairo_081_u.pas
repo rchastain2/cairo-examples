@@ -6,9 +6,9 @@ unit cairo_081_u;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, CairoLCL;
-
-(* https://github.com/blikblum/luipack *)
+  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
+  
+  CairoLCL; { https://github.com/blikblum/luipack }
 
 type
 
