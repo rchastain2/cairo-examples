@@ -30,30 +30,25 @@ const
 var
   dx, dy: double;
   xx1, yy1, xx2, yy2: double;
-  darkblue, lightblue, white, bkcolor, linecolor, pointcolor: TCairoColor;
+  bkcolor, linecolor, pointcolor: TCairoColor;
   filename: string;
 
 begin
   sw := StrToIntDef(ParamStr(1), SURFACE_WIDTH);
   sh := StrToIntDef(ParamStr(2), SURFACE_HEIGHT);
   
-  darkblue  := TCairoColor.Create($262F45);
-  lightblue := TCairoColor.Create($2397D4);
-  white     := TCairoColor.Create($FFFFFF);
-{ https://wiki.mageia.org/en/Directives_pour_la_conception_graphique-fr#Palette_de_couleurs_officielle }
-  
   if (ParamStr(1) = '--dark') or (ParamStr(3) = '--dark') then
   begin
-    bkcolor := darkblue;
-    linecolor := lightblue;
+    bkcolor := CairoColor.darkblue;
+    linecolor := CairoColor.lightblue;
     filename := 'dark';
   end else
   begin
-    bkcolor := lightblue;
-    linecolor := darkblue;
+    bkcolor := CairoColor.lightblue;
+    linecolor := CairoColor.darkblue;
     filename := 'light';
   end;
-  pointcolor := white;
+  pointcolor := CairoColor.white;
   filename := Format(Concat(filename, '-%dx%d.png'), [sw, sh]);
   
   sf1 := cairo_image_surface_create(CAIRO_FORMAT_ARGB32, sw, sh);

@@ -1,4 +1,9 @@
 
+PROGRAMS := $(filter-out cairocolor.pas,$(wildcard *.pas))
+BINARIES := $(patsubst %.pas,%,$(PROGRAMS))
+
+all: $(BINARIES)
+
 %: %.pas
 	fpc $<
 
