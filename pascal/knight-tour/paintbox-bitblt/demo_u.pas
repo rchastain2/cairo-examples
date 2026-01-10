@@ -60,7 +60,7 @@ begin
   w := PaintBox1.Width;
   h := PaintBox1.Height;
 
-  surface := cairo_win32_surface_create_with_dib(CAIRO_FORMAT_ARGB32,w,h);
+  surface := cairo_win32_surface_create_with_dib(CAIRO_FORMAT_ARGB32, w, h);
 
   cr := cairo_create(surface);
 
@@ -98,7 +98,7 @@ begin
   end;
   cairo_destroy(cr);
 
-  BitBlt(PaintBox1.Canvas.Handle,0,0,w,h,cairo_win32_surface_get_dc(surface),0,0,SRCCOPY);
+  BitBlt(PaintBox1.Canvas.Handle, 0, 0, w, h, cairo_win32_surface_get_dc(surface), 0, 0, SRCCOPY);
 
   cairo_surface_destroy(surface);
 end;

@@ -30,7 +30,7 @@ implementation
 {$R *.lfm}
 
 uses
-  Cairo, CairoWin32;
+  Cairo{, CairoWin32};
 
 { TForm1 }
 
@@ -52,6 +52,8 @@ procedure TForm1.DrawPath(const aPath: TVectorArray);
     result := i / 8 - 1 / 16;
   end;
 
+const
+  fmt: cairo_format_t = CAIRO_FORMAT_ARGB32;
 var
   cr: pcairo_t;
   surface: pcairo_surface_t;
@@ -65,8 +67,16 @@ begin
   bitmap := TBitmap.Create;
   bitmap.SetSize(w, h);
 
-  surface := cairo_win32_surface_create(bitmap.Canvas.Handle);
+ {surface := cairo_win32_surface_create(bitmap.Canvas.Handle);}
 
+  surface := cairo_image_surface_create_for_data(
+    bitmap.RawImage.Data,
+    fmt,
+    bitmap.Width,
+    bitmap.Height,
+    cairo_format_stride_for_width(fmt, bitmap.Width)
+  );
+  
   cr := cairo_create(surface);
 
   cairo_translate(cr, 0, h);
