@@ -69,7 +69,7 @@ begin
   cairo_scale(cr2, sh, sh);
   cairo_translate(cr2, (1 / 2) * (sw / sh), 1 / 2);
   
-  cairo_set_line_width(cr1, 1 / 500);
+  cairo_set_line_width(cr1, 1 / 1000);
   cairo_set_line_cap(cr1, CAIRO_LINE_CAP_ROUND);
   cairo_set_line_join(cr1, CAIRO_LINE_JOIN_ROUND);
   
