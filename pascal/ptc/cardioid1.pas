@@ -23,9 +23,10 @@ var
   dx, dy: double;
   xx1, yy1, xx2, yy2: double;
 const
+  TITLE = 'A method for drawing a cardioid (PTCPas & Cairo example)';
   CONSOLE_W = 512;
   CONSOLE_H = CONSOLE_W;
-  DELAY = 60;
+  DELAY = 30;
 var
   console: IPTCConsole;
   format: IPTCFormat;
@@ -40,7 +41,7 @@ begin
   try
     console := TPTCConsoleFactory.CreateNew;
     format := TPTCFormatFactory.CreateNew(32, $00FF0000, $0000FF00, $000000FF);
-    console.open('A method for drawing a cardioid (PTCPas & Cairo example)', CONSOLE_W, CONSOLE_H, format);
+    console.open(TITLE, CONSOLE_W, CONSOLE_H, format);
     surface := TPTCSurfaceFactory.CreateNew(console.width, console.height, format);
     
     ang := PI / 72;
