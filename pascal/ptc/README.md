@@ -1,6 +1,6 @@
-# Cardioid
+# PTCPas and Cairo
 
-Example of an animation using [PTCPas](https://sourceforge.net/p/ptcpas/) and Cairo.
+Animations using [PTCPas](https://sourceforge.net/p/ptcpas/) and Cairo.
 
 ![Screenshot](screenshot.png)
 
