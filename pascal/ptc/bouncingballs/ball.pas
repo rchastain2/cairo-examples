@@ -4,7 +4,7 @@ unit ball;
 interface
 
 uses
-  Classes;
+  Classes, Cairo;
 
 type
   TFPoint = record
@@ -26,7 +26,7 @@ type
   public
     constructor Create(Position, SpeedVektor: TFPoint; Radius, Mass: single);
     destructor Destroy; override;
-    //procedure Render(const APaintBox: TCairoPaintBox);
+    procedure Render(const cr: pcairo_t);
     procedure CalculateMass;
     procedure BorderCollision(CollisionRect: TRect; InsideCollision: boolean = True);
     procedure Collision(const ABall: TBall);
@@ -236,17 +236,24 @@ begin
   FMass := 4 / 3 * FRadius * FRadius * FRadius * pi;
 end;
 
-(*
-procedure TBall.Render(const APaintBox: TCairoPaintBox);
+{.$DEFINE GRADIENT}
+
+procedure TBall.Render(const cr: pcairo_t);
+var
+  r1: pcairo_pattern_t;
 begin
-  with APaintBox.Context do
-  begin
-    SetSourceRgb(FColor.r, FColor.g, FColor.b);
-    Arc(FX, FY, FRadius, 0, 2 * PI);
-    StrokePreserve;
-    Fill;
-  end;
+  cairo_arc(cr, Position.X, Position.Y, Radius, 0, 2 * PI);
+{$IFDEF GRADIENT}
+  r1 := cairo_pattern_create_radial(Position.X, Position.Y, 0, Position.X, Position.Y, Radius);
+  cairo_pattern_add_color_stop_rgb(r1, 0.5, Color.r, Color.g, Color.b);
+  cairo_pattern_add_color_stop_rgb(r1, 1.0, 0.0, 0.0, 0.0);
+  cairo_set_source(cr, r1);
+  cairo_fill(cr);
+  cairo_pattern_destroy(r1);
+{$ELSE}
+  cairo_set_source_rgb(cr, Color.r, Color.g, Color.b);
+  cairo_fill(cr);
+{$ENDIF}
 end;
-*)
 
 end.

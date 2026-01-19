@@ -81,21 +81,19 @@ begin
   height := surface.height;
 
   pixels := surface.lock;
-  sf := cairo_image_surface_create_for_data(pbyte(pixels), CAIRO_FORMAT_ARGB32, width, height,
-    cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, width));
+  sf := cairo_image_surface_create_for_data(
+    pbyte(pixels),
+    CAIRO_FORMAT_ARGB32, width, height,
+    cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, width)
+  );
   cr := cairo_create(sf);
 
   cairo_set_source_rgb(cr, 0.0, 0.0, 0.0);
   cairo_paint(cr);
 
   for i := 0 to High(balls) do
-    with balls[i] do
-    begin
-      cairo_set_source_rgb(cr, Color.r, Color.g, Color.b);
-      cairo_arc(cr, Position.X, Position.Y, Radius, 0, 2 * PI);
-      cairo_fill(cr);
-    end;
-
+    balls[i].Render(cr);
+  
   cairo_destroy(cr);
   cairo_surface_destroy(sf);
 
@@ -108,23 +106,30 @@ const
   CONSOLE_H = 600;
   DELAY = 30;
 
+{.$DEFINE MODE}
+
 var
   console: IPTCConsole;
   format: IPTCFormat;
-  modes: TPTCModeList;
   surface: IPTCSurface;
   balls: TBalls;
-  w, h: integer;
-  
+{$IFDEF MODE}
+  modes: TPTCModeList;
+  width, height: integer;
+{$ENDIF}
+
 begin
   try
     console := TPTCConsoleFactory.CreateNew;
     format := TPTCFormatFactory.CreateNew(32, $00FF0000, $0000FF00, $000000FF);
-    //console.open(TITLE, CONSOLE_W, CONSOLE_H, format);
+{$IFDEF MODE}
     modes := console.modes;
-    w := 4 * modes[0].width  div 5;
-    h := 4 * modes[0].height div 5;
-    console.open(TITLE, w, h, format);
+    width := 4 * modes[0].width div 5;
+    height := 4 * modes[0].height div 5;
+    console.open(TITLE, width, height, format);
+{$ELSE}
+    console.open(TITLE, CONSOLE_W, CONSOLE_H, format);
+{$ENDIF}
     surface := TPTCSurfaceFactory.CreateNew(console.width, console.height, format);
 
     balls := CreateBalls(console.width, console.height);
