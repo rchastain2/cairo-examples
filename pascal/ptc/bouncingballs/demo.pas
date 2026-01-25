@@ -12,7 +12,7 @@ program BouncingBalls;
 {$MODE objfpc}
 
 uses
-  SysUtils, Classes, ptc, Cairo, Ball;
+  SysUtils, Classes, ptc, Cairo, Ball, WorkArea;
 
 type
   TBalls = array of TBall;
@@ -106,7 +106,7 @@ const
   CONSOLE_H = 600;
   DELAY = 30;
 
-{.$DEFINE MODE}
+{$DEFINE MODE}
 
 var
   console: IPTCConsole;
@@ -115,25 +115,28 @@ var
   balls: TBalls;
 {$IFDEF MODE}
   modes: TPTCModeList;
-  width, height: integer;
 {$ENDIF}
-
+  width, height: integer;
+  
 begin
   try
     console := TPTCConsoleFactory.CreateNew;
     format := TPTCFormatFactory.CreateNew(32, $00FF0000, $0000FF00, $000000FF);
 {$IFDEF MODE}
     modes := console.modes;
-    width := 4 * modes[0].width div 5;
-    height := 4 * modes[0].height div 5;
-    console.open(TITLE, width, height, format);
+    width  := 3 * modes[0].width  div 4;
+    height := 3 * modes[0].height div 4;
 {$ELSE}
-    console.open(TITLE, CONSOLE_W, CONSOLE_H, format);
+  if not GetWorkArea(width, height) then
+  begin
+    width  := CONSOLE_W;
+    height := CONSOLE_H;
+  end;
 {$ENDIF}
+    console.open(TITLE, width, height, format);
     surface := TPTCSurfaceFactory.CreateNew(console.width, console.height, format);
-
     balls := CreateBalls(console.width, console.height);
-
+    
     while not console.KeyPressed do
     begin
       DrawBalls(surface, balls);
