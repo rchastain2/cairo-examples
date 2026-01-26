@@ -152,12 +152,11 @@ const
 var
   gd, gm, err: smallint;
   image: PImage;
-  width, height, left, top: integer;
-  sf_back: pcairo_surface_t;
+  sf: pcairo_surface_t;
   ang: double;
   
 begin
-  sf_back := Cardioid(SURFACE_WIDTH, SURFACE_HEIGHT);
+  sf := Cardioid(SURFACE_WIDTH, SURFACE_HEIGHT);
   
   WindowTitle := 'A method for drawing a cardioid';
   gd := VESA;
@@ -170,19 +169,18 @@ begin
     SetBkColor($808080);
     ClearDevice;
     
-    width := SURFACE_WIDTH;
-    height := SURFACE_HEIGHT;
-    left := (Succ(GetMaxX) - width) div 2;
-    top := (Succ(GetMaxY) - height) div 2;
-    
-    image := CreateImage(width, height);
+    image := CreateImage(SURFACE_WIDTH, SURFACE_HEIGHT);
     
     ang := 0;
     while not KeyPressed do
     begin
-      CairoDraw(image^, sf_back, ang);
-      PutImage(left, top, image^, NormalPut);
-      
+      CairoDraw(image^, sf, ang);
+      PutImage(
+        (Succ(GetMaxX) - SURFACE_WIDTH) div 2,
+        (Succ(GetMaxY) - SURFACE_HEIGHT) div 2,
+        image^,
+        NormalPut
+      );
       Delay(60);
       
       ang := ang + PI / 18;
@@ -192,8 +190,8 @@ begin
     
     ReadKey;
     CloseGraph;
-    FreeImage(image, width, height);
+    FreeImage(image, SURFACE_WIDTH, SURFACE_HEIGHT);
   end;
   
-  cairo_surface_destroy(sf_back);
+  cairo_surface_destroy(sf);
 end.

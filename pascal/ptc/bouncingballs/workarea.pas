@@ -37,7 +37,7 @@ var
 begin
   if GetWorkArea(width, height) then
   begin
-    WriteLn(width, height);
+    
   end;
 *)
 end.
